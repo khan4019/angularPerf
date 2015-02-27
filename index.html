@@ -63,7 +63,7 @@
 				<section>
 					<h2>links</h2>
 					<ul>
-						<li><a href="https://www.youtube.com/watch?v=zyYpHIOrk_Y">ng conf video</a></li>
+						<li></li>
 						<li><a href="http://stackoverflow.com/questions/17656397/angular-js-scaling-performance">check it: stackoverflow some discussion</a></li>
 						<li><a href="http://bahmutov.calepin.co/improving-angular-web-app-performance-example.html">long: perf with example</a></li>
 					</ul>
@@ -126,6 +126,12 @@
 					<section>
 						<h2></h2>
 						<a href="http://stackoverflow.com/questions/14049480/what-are-the-nuances-of-scope-prototypal-prototypical-inheritance-in-angularjs">understand scope</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>ng-hide ng-show</h1>
+						<a href="http://youtu.be/zyYpHIOrk_Y?t=10m38s">start from here</a>
 					</section>
 					<section>
 						<h2></h2>
@@ -192,8 +198,43 @@
 						<a href="http://blog.scalyr.com/2013/10/angularjs-1200ms-to-35ms/"> optimization 2: 1200ms-to-35ms</a>
 					</section>
 					<section>
+						<h2></h2>
+						<ul>
+							<li>whatever is the first argument will be executed, many many times</li>
+							<li>it will compare values by reference</li>
+							<li>but if you pass "true" in the </li>
+							<li>deep - recurse through object with deep comparision; slow recurses- </li>
+							<li>also make a deep copy each time watched, to compare </li>
+						</ul>
+						<h4>avoid deep watch each time possible</h4>
+					</section>
+					<section>
+						<h2>watchCollection</h2>
+						<p>google it</p>
+					</section>
+					<section>
 						<h2>remove unneeded watcher</h2>
 						<a href="http://angular-tips.com/blog/2013/08/removing-the-unneeded-watches/">check this one</a>
+					</section>
+					<section>
+						<h2>watch only what needed</h2>
+						<li>sometimes, deep watch is needed but not the whole object</li>
+						<li>By stripping out irrelevant data, we can make the comparison much faster.</li>
+						<pre><code>
+$scope.$watch(‘listOfBigObjects’,
+    myHandler, true);
+						</code></pre>
+					</section>
+					<section>
+						<pre><code>
+$scope.$watch(function($scope) {
+  return $scope.listOfBigObjects.
+      map(function(bigObject) {
+        return bigObject.foo.
+            fieldICareAbout;
+      });
+}, myHandler, true);
+						</code></pre>
 					</section>
 				</section>
 				<section>
@@ -207,7 +248,24 @@
 				</section>
 				<section>
 					<section>
-						<h1>$scope.$apply() versus $scope.$digest()</h1>
+						<h1>$apply() vs $digest()</h1>
+												
+					</section>
+					<section>
+						<h2></h2>
+						<ul>
+							<li>$apply does rootscope.digest</li>
+							<li>this means everything: that scope and all its descendent are dirty checked</li>
+							<li>when u r writing a directive and inside that u r doing something. then u should use digest than apply</li>
+						</ul>
+					</section>
+					<section>
+						<h2></h2>
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
 						<a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">code example in the middle</a>
 					</section>
 				</section>
@@ -217,6 +275,46 @@
 					</section>
 					<section>
 						<a href="http://www.bennadel.com/blog/2737-directive-templates-have-a-small-impact-on-performance-in-angularjs.htm">directive template has small impact on performance</a>
+					</section>
+					<section>
+						<ul>
+							<li>when directive inside ng repeat</li>
+							<li>1. compile is called only once</li>
+							<li>link and constructor is called once per iteration</li>
+						</ul>
+						<h4>so put as much as possible inside compile</h4>
+						
+					</section>
+					<section>
+						<pre><code>
+myApp.directive(function() {
+  return {
+    link: function(s, elem, attr) {
+      s.foo = scope.$eval(attr.foo);
+      scope.$watch(attr.list,
+          function(list) {
+            // do something
+          }, true);
+    }};});
+						</code></pre>
+						<a href="https://docs.google.com/presentation/d/15XgHRI8Ng2MXKZqglzP3PugWFZmIDKOnlAXDGZW2Djg/edit#slide=id.g47be57cd_05">directive</a>
+					</section>
+					<section>
+						<pre><code>
+myApp.directive(function($parse) {
+  return {
+    compile: function(elem, attr) {
+      var fooExp = $parse(attr.foo),
+          listExp = $parse(attr.list);
+      return function link(s, elem) {
+        s.foo = fooExp(s);
+        scope.$watchCollection(listExp,
+            function(list) {
+              // do something
+            });
+      };}};});
+
+						</code></pre>
 					</section>
 				</section>
 				<section>
@@ -281,11 +379,46 @@
 					</section>
 					<section>
 						<h2>track by</h2>
+						<li>By default, ng-repeat creates a dom node for each item and destroys that dom node when the item is removed.</li>
+						<li>With track by $index, it will reuse dom nodes.</li>
 						<a href="http://www.codelord.net/2014/04/15/improving-ng-repeat-performance-with-track-by/">ng-repeat performance by track by</a>
+					</section>
+					<section>
+						<pre><code>
+&lt;div ng-repeat=”item in array”&gt;
+  I live and die by {{item}}.
+&lt;div&gt;
+						</code></pre>
+						<pre class="fragment"><code>
+&lt;div ng-repeat=”item in array track by $index”&gt;
+  I live until {{array.length}} is
+  less than {{$index}}.
+&lt;div&gt;
+						</code></pre>
 					</section>
 					<section>
 						<h2>very good list of suggestion</h2>
 						<a href="http://tech.small-improvements.com/2013/09/10/angularjs-performance-with-large-lists/">tuning long list</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>why slow</h1>
+					</section>
+					<section>
+						<h2>what makes angular slow</h2>
+						<h3>in efficient directive</h3>
+						<ul>
+							<li>link vs compile</li>
+							
+						</ul>
+						<h3>dirty checking</h3>
+						<ul>
+							<li>lots of watcher</li>
+							<li>lots of slow watcher</li>
+							<li>too many calls to apply</li>
+						</ul>
+						<a href="https://www.youtube.com/watch?v=zyYpHIOrk_Y">ng conf video</a>
 					</section>
 				</section>
 				<section>
@@ -304,6 +437,14 @@
 					<section>
 						<h2>nice collection</h2>
 						<a href="http://www.cabotsolutions.com/2014/08/5-tips-to-improve-performance-in-angularjs-cordova-hybrid-applications/">talk about emit, broadcast and bootstrap</a>
+					</section>
+					<section>
+						<h2></h2>
+						<li>$parse vs $eval vs interpolation</li>
+						<li>parse: tokenise</li>
+						<li>better: call parse once. save it</li>
+						<li>and do eval everytime u needed</li>
+						<a href="http://youtu.be/zyYpHIOrk_Y?t=5m55s">ng conf video</a>
 					</section>
 					<section>
 						<h2>use scope.$digest for performance</h2>
@@ -326,6 +467,12 @@
 						<li><a href="http://www.williambrownstreet.net/blog/2014/04/faster-angularjs-rendering-angularjs-and-reactjs/">faster js rendering with reactjs</a></li>
 						<li></li>
 						<li><a href="http://blog.altoros.com/speed-up-i18n-in-angularjs.html">speed up with internationalization library</a></li>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>ngReact</h1>
+						<a href="http://davidchang.github.io/ngReact/">check example</a>
 					</section>
 				</section>
 				<section>
