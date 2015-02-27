@@ -63,36 +63,17 @@
 				<section>
 					<h2>links</h2>
 					<ul>
-						<li><a href="http://ng-workshop.com/en/topic/ng-performance">very good: list of articles</a></li>
-						<li><a href="http://blog.revolunet.com/blog/2013/05/01/angular-tips-n-tricks/">check out: at the bottom there is part-2</a></li>
-						<li><a href="http://bahmutov.calepin.co/improving-angular-web-app-performance-example.html">long: perf with example</a></li>
-						<li></li>
-						<li><a href="http://www.williambrownstreet.net/blog/2014/04/faster-angularjs-rendering-angularjs-and-reactjs/">faster js rendering with reactjs</a></li>
-						<li></li>
+						<li><a href="https://www.youtube.com/watch?v=zyYpHIOrk_Y">ng conf video</a></li>
 						<li><a href="http://stackoverflow.com/questions/17656397/angular-js-scaling-performance">check it: stackoverflow some discussion</a></li>
-						
+						<li><a href="http://bahmutov.calepin.co/improving-angular-web-app-performance-example.html">long: perf with example</a></li>
 					</ul>
 				</section>
 				<section>
 					<h2>slides</h2>
 					<ul>
 						<li><a href="http://de.slideshare.net/dragosrusu/angularjs-overcoming-performance-issues-limits">slide: check this slide</a></li>
-						<li><a href="http://de.slideshare.net/damienklinnert/angular-performance-tuning-for-large?related=1">slide: more</a></li>
-						
-						<li><a href="https://www.youtube.com/watch?v=gEjmv5gwF60">video: explains Batarang</a></li>
-						<li><a href="http://www.slideshare.net/dragosrusu/angularjs-overcoming-performance-issues-limits">someone has slides</a></li>
 						<li><a href="http://www.slideshare.net/damienklinnert/angular-performance-tuning-for-large">another slide</a></li>
-						<li><a href="https://docs.google.com/presentation/d/15XgHRI8Ng2MXKZqglzP3PugWFZmIDKOnlAXDGZW2Djg/edit#slide=id.p">another slide in ng-conf</a></li>
-						<li><a href="http://slidedeck.io/sfroestl/angularjs-performance-talk">slides again</a></li>
-					</ul>
-				</section>
-				<section>
-					<h2>extra</h2>
-					<ul>
-						<li><a href="http://mono.software/posts/Improving-AngularJS-long-list-rendering-performance-using-ReactJS/">use react for long list</a></li>
-						
-						<li><a href="http://blog.altoros.com/speed-up-i18n-in-angularjs.html">speed up with internationalization library</a></li>
-						
+						<li><a href="https://www.youtube.com/watch?v=gEjmv5gwF60">video: explains Batarang</a></li>
 					</ul>
 				</section>
 				<section>
@@ -101,12 +82,6 @@
 						<li><a href="http://dapperdeveloper.com/2015/01/26/performance-of-angularjs-reactjs-and-knockoutjs-compared/">with react and knockout</a></li>
 						<li><a href="http://voidcanvas.com/emberjs-vs-angularjs-performance-testing/">with ember</a></li>
 						<li><a href="https://www.codementor.io/reactjs/tutorial/reactjs-vs-angular-js-performance-comparison-knockout">another one</a></li>
-						<li><a href="http://www.slideshare.net/betclicTech/angularjs-best-practices">less important best practice</a></li>
-						<li><a href="http://www.jeremyzerr.com/angularjs-directive-best-practices">Directive best practice</a></li>
-						<li><a href="https://coderwall.com/p/y0zkiw/building-large-apps-with-angularjs">building large app</a></li>
-						<li><a href=""></a></li>
-						<li><a href=""></a></li>
-						<li><a href=""></a></li>
 						<li><a href="http://ng-learn.org/2014/03/AngularJS-2-Status-Preview/">2.0 preview</a></li>
 					</ul>
 				</section>
@@ -150,6 +125,7 @@
 					</section>
 					<section>
 						<h2></h2>
+						<a href="http://stackoverflow.com/questions/14049480/what-are-the-nuances-of-scope-prototypal-prototypical-inheritance-in-angularjs">understand scope</a>
 					</section>
 					<section>
 						<h2></h2>
@@ -172,7 +148,10 @@
 						<p>This cycle is an internal execution loop that runs through your entire application’s bindings and checks if any values have changed. If values have changed, Angular will also update any values in the Model to return to a clear internal state. </p>
 						<p>When we create data-bindings with AngularJS, we’re creating more $$watchers and $scope Objects, which in turn will take longer to process on each $digest.</p>
 					</section>
-
+					<section>
+						<h2></h2>
+						<a href="http://www.aaron-gray.com/delaying-the-digest-cycle-in-angularjs/">delay digest cycle</a>
+					</section>
 				</section>
 				<section>
 					<section>
@@ -244,19 +223,6 @@
 					<section>
 						<h1>transclusion and scope</h1>
 						<a href="http://angular-tips.com/blog/2014/03/transclusion-and-scopes/">see whether to include or not</a>
-					</section>
-				</section>
-				<section>
-					<section>
-						<h1>summary</h1>
-						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">have a summary at bottom</a>
-						<br>
-						<a href="https://medium.com/@jeffwhelpley/is-angularjs-fast-enough-98dcf96406c8">might get points for summary</a>
-						<br>
-						<a href="http://www.fse.guru/angularjs-performance-tips">a list with repetitive stuff</a>
-					</section>
-					<section>
-						<h2></h2>
 					</section>
 				</section>
 				<section>
@@ -348,8 +314,31 @@
 						<a href="http://ng-perf.com/">ng-perf.com</a>
 					</section>
 					<section>
+						<h2>batching http request</h2>
+						<a href="http://jonsamwell.com/batching-http-requests-in-angular/">batching http request</a>
+					</section>
+					<section>
 						<h2>mouseEnter</h2>
 						<a href="https://www.linkedin.com/pulse/20140528193614-17422516-jailbreaking-angular-apps-a-real-story-about-an-experience-i-had-recently">check middle for mouse enter</a>
+					</section>
+					<section>
+						<li><a href="http://mono.software/posts/Improving-AngularJS-long-list-rendering-performance-using-ReactJS/">use react for long list</a></li>
+						<li><a href="http://www.williambrownstreet.net/blog/2014/04/faster-angularjs-rendering-angularjs-and-reactjs/">faster js rendering with reactjs</a></li>
+						<li></li>
+						<li><a href="http://blog.altoros.com/speed-up-i18n-in-angularjs.html">speed up with internationalization library</a></li>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>summary</h1>
+						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">have a summary at bottom</a>
+						<br>
+						<a href="https://medium.com/@jeffwhelpley/is-angularjs-fast-enough-98dcf96406c8">might get points for summary</a>
+						<br>
+						<a href="http://www.fse.guru/angularjs-performance-tips">a list with repetitive stuff</a>
+					</section>
+					<section>
+						<h2></h2>
 					</section>
 				</section>
 				<section>
