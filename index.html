@@ -57,17 +57,17 @@
 				</section>
 				<section>
 					<section>
-						<h1>ToDos</h1>
+						<h2>ToDos</h2>
 					</section>
 				</section>
 				<section>
 					<h2>links</h2>
 					<ul>
-						<li><a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">Very good: angularjs-performance-large-applications</a></li>
-						<li><a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">very good: simple optimization</a></li>
-						<li><a href="http://blog.scalyr.com/2013/10/angularjs-1200ms-to-35ms/"> good and read comment: 1200ms-to-35ms</a></li>
-						<li><a href="http://bahmutov.calepin.co/improving-angular-web-app-performance-example.html">good: perf with example</a></li>
-						<li><a href="http://thenittygritty.co/angularjs-pitfalls-using-scopes">good: in depth</a></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li><a href="http://bahmutov.calepin.co/improving-angular-web-app-performance-example.html">long: perf with example</a></li>
+						<li></li>
 						<li><a href="http://daginge.com/technology/2013/08/11/debugging-performance-problems-in-angularjs-with-batarang/">good: debugging perf issue with tools</a></li>
 						<li><a href="https://www.exratione.com/2013/12/considering-speed-and-slowness-in-angularjs/">average: consider speed and slowness</a></li>
 						<li><a href="http://www.williambrownstreet.net/blog/2014/04/faster-angularjs-rendering-angularjs-and-reactjs/">faster js rendering with reactjs</a></li>
@@ -132,6 +132,13 @@
 				</section>
 				<section>
 					<section>
+						<h1>starts</h1>
+						<p>discuss how two way bindings and ng-repeat works</p>
+						<a href="http://thenittygritty.co/angularjs-pitfalls-using-scopes">good: in depth</a>
+					</section>
+				</section>
+				<section>
+					<section>
 						<h1>Scope</h1>
 					</section>
 					<section>
@@ -139,8 +146,8 @@
 						<ul>
 							<li>JavaScript Object</li>
 							<li>Prototypical Inheritance</li>
-							<li></li>
-							<li></li>
+							<li>new scope creates more values for GC to collect later</li>
+							<li>every scope stores an array of functions $$watchers</li>
 							<li></li>
 							<li></li>
 							<li>Find more about scope: from some in depth discussion</li>
@@ -148,22 +155,142 @@
 					</section>
 					<section>
 						<h2></h2>
+						<p>Every time $watch is called on a scope value, or a value is bound from the DOM with interpolation, an ng-repeat, an ng-switch, and ng-if, or any other DOM attribute/element, a function gets added to the $$watchers array of the innermost scope.</p>
+						<p>When any value in scope changes, all watchers in the $$watchers array will fire, and if any of them modify a watched value, they will all fire again. This will continue until a full pass of the $$watchers array makes no changes, or AngularJS throws an exception.</p>
+						<p>if non-Angular code is run through $scope.$apply(), this will immediately kickstart the digest cycle.</p>
+						<p>The final note is that $scope.evalAsync() will run code in an async loop that does NOT trigger another digest cycle, and which will run at the end of the current/next digest cycle.</p>
 						<ul>
 							<li>small scope will be faster than larger</li>
 							<li></li>
-							<li>every scope stores an array of functions $$watchers</li>
+							
+							<li></li>
+							<li></li>
+						</ul>
+						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">Very good: angularjs-performance-large-applications</a>
+					</section>
+					<section>
+						<h2></h2>
+					</section>
+					<section>
+						<h2></h2>
+					</section>
+					<section>
+						<h2></h2>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>Digest cycle</h1>
+					</section>
+					<section>
+						<h2></h2>
+						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">section 9</a>
+					</section>
+					<section>
+						<h2></h2>
+						<p>Each time a Model is updated, either through user input in the View, or via service input to the Controller, Angular runs something called a $digest cycle.</p>
+						<p>This cycle is an internal execution loop that runs through your entire application’s bindings and checks if any values have changed. If values have changed, Angular will also update any values in the Model to return to a clear internal state. </p>
+						<p>When we create data-bindings with AngularJS, we’re creating more $$watchers and $scope Objects, which in turn will take longer to process on each $digest.</p>
+					</section>
+
+				</section>
+				<section>
+					<section>
+						<h1>watcher</h1>
+					</section>
+					<section>
+						<h2></h2>
+						<p>Another common problem is the utilization of functions in watchers or bindings. Never bind anything (ng-show, ng-repeat, etc.) directly to a function. Never watch a function result directly. This function will run on every digest cycle, possibly slowing your application to a crawl.</p>
+						<p>Similarly, Angular provides the ability to watch entire objects by passing a third, optional true parameter to scope.$watch. This is, for lack of better words, a terrible idea. A much better solution is to rely on services and object references to propagate object changes between scopes.</p>
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</section>
+					<section>
+						<h2>aggregate watcher</h2>
+						<p>All that time spent invoking change watchers was mostly wasted. </p>
+						<p>To address this, we created a directive that “hides” the change watchers of its children, allowing them to be invoked only when the value of a specified parent expression changes. With this change, we avoided invoking thousands of per-word change watchers on every mouse click or other minor event.  </p>
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+						<a href="http://blog.scalyr.com/2013/10/angularjs-1200ms-to-35ms/"> optimization 2: 1200ms-to-35ms</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>binding</h1>
+					</section>
+					<section>
+						<h2>one time binding</h2>
+						
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>$scope.$apply() versus $scope.$digest()</h1>
+						<a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">code example in the middle</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>summary</h1>
+						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">have a summary at bottom</a>
+					</section>
+					<section>
+						<h2></h2>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>long list</h1>
+					</section>
+					<section>
+						<h2></h2>
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
 							<li></li>
 							<li></li>
 						</ul>
 					</section>
 					<section>
 						<h2></h2>
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>ng repeat</h1>
 					</section>
 					<section>
 						<h2></h2>
+						<p>An ng-repeat likely deals with Arrays of $scope Objects and this hammers the $digest cycle’s performance.</p>
+						<p>For example, instead of rendering a global navigation using ng-repeat, we could create our own navigation using the $interpolate provider to render our template against an Object and convert it into DOM nodes.</p>
+						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">7.3 with code example</a>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>filter</h1>
 					</section>
 					<section>
 						<h2></h2>
+						<a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">at the bottom: limit DOM filter</a>
 					</section>
 				</section>
 				<section>
