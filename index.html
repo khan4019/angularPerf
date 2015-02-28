@@ -183,7 +183,7 @@
    &lt;/tr&gt;
 &lt;/table&gt;
 						</code></pre>
-						<li>debounce user input (searching)</li>
+						<li class="fragment">debounce user input (searching)</li>
 						<br>
 						<br>
 						<a href="http://tech.small-improvements.com/2013/09/10/angularjs-performance-with-large-lists/">tuning long list</a>
@@ -204,10 +204,7 @@
 						<h2>track by</h2>
 						<li>By default, ng-repeat creates a dom node for each item and destroys that dom node when the item is removed.</li>
 						<li>With track by $index, it will reuse dom nodes.</li>
-						<a href="http://www.codelord.net/2014/04/15/improving-ng-repeat-performance-with-track-by/">ng-repeat performance by track by</a>
-					</section>
-					<section>
-						<pre><code>
+						<pre class="fragment"><code>
 &lt;div ng-repeat=”item in array”&gt;
   I live and die by {{item}}.
 &lt;div&gt;
@@ -218,6 +215,8 @@
   less than {{$index}}.
 &lt;div&gt;
 						</code></pre>
+						<br>
+						<a href="http://www.codelord.net/2014/04/15/improving-ng-repeat-performance-with-track-by/">ng-repeat performance by track by</a>
 					</section>
 					<section>
 						<h2>bind once</h2>
@@ -230,14 +229,26 @@
 				</section>
 				<section>
 					<section>
-						<h1>ng-hide ng-show</h1>
+						<h1>ng-show</h1>
+					</section>
+					<section>
+						<h2>how it works</h2>
+						<ul>
+							<li>show or hide html elment</li>
+							<li>based on an expression</li>
+							<li>by adding and removing .ng-hide class</li>
+							<li class="fragment">will create and evaluate hidden elements</li>
+							<li class="fragment">display none</li>
+						</ul>
 						<a href="http://youtu.be/zyYpHIOrk_Y?t=10m38s">start from here</a>
 					</section>
 					<section>
-						<h2></h2>
-					</section>
-					<section>
-						<h2></h2>
+						<h2>ng-if</h2>
+						<ul>
+							<li>completely removes and recreate DOM</li>
+							<li class="fragment">elements which is not in ur DOM, has less impact</li>
+							<li class="fragment">ng-if creates a child scope while ng-show/ng-hide does not</li>
+						</ul>
 					</section>
 				</section>
 				<section>
