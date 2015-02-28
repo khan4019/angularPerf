@@ -58,12 +58,12 @@
 				<section>
 					<section>
 						<h2>ToDos</h2>
+						<li>create a flow chart for ng repeat</li>
 					</section>
 				</section>
 				<section>
 					<h2>links</h2>
 					<ul>
-						
 						<li><a href="http://stackoverflow.com/questions/17656397/angular-js-scaling-performance">check it: stackoverflow some discussion</a></li>
 						<li><a href="http://bahmutov.calepin.co/improving-angular-web-app-performance-example.html">long: perf with example</a></li>
 						<li></li>
@@ -98,35 +98,134 @@
 						<h1>Scope</h1>
 					</section>
 					<section>
-						<h2>scope</h2>
+						<h2>Scopes</h2>
 						<ul>
 							<li>JavaScript Object</li>
 							<li>Prototypical Inheritance</li>
-							<li>new scope creates more values for GC to collect later</li>
-							<li>every scope stores an array of functions $$watchers</li>
-							<li></li>
-							<li></li>
-							<li>Find more about scope: from some in depth discussion</li>
+							<li class="fragment">Arranged in hierarchical structure</li>
+							<li class="fragment">Mimic the DOM structure of the application</li>
+							<li class="fragment">Stores an array of functions $$watchers</li>
+							<li class="fragment">Can watch expressions and propagate events.</li>
+							<li class="fragment">new scope creates more values for GC to collect later</li>
 						</ul>
+						<br>
+						<br>
+						<a href="https://github.com/angular/angular.js/wiki/Understanding-Scopes">understanding scope</a>
 					</section>
 					<section>
 						<h2></h2>
-						<p>Every time $watch is called on a scope value, or a value is bound from the DOM with interpolation, an ng-repeat, an ng-switch, and ng-if, or any other DOM attribute/element, a function gets added to the $$watchers array of the innermost scope.</p>
-						<p>When any value in scope changes, all watchers in the $$watchers array will fire, and if any of them modify a watched value, they will all fire again. This will continue until a full pass of the $$watchers array makes no changes, or AngularJS throws an exception.</p>
-						<p>if non-Angular code is run through $scope.$apply(), this will immediately kickstart the digest cycle.</p>
-						<p>The final note is that $scope.evalAsync() will run code in an async loop that does NOT trigger another digest cycle, and which will run at the end of the current/next digest cycle.</p>
 						<ul>
 							<li>small scope will be faster than larger</li>
 							<li></li>
-							
-							<li></li>
-							<li></li>
+							<li>get some points</li>
+							<li>will talk about this later</li>
 						</ul>
+						<br>
+						<br>
 						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">Very good: angularjs-performance-large-applications</a>
 					</section>
+				</section>
+				<section>
 					<section>
-						<h2></h2>
-						<a href="http://stackoverflow.com/questions/14049480/what-are-the-nuances-of-scope-prototypal-prototypical-inheritance-in-angularjs">understand scope</a>
+						<h1>ng repeat</h1>
+					</section>
+					<section>
+						<h2>how ng-repat works</h2>
+						<ul>
+							<li>Iterates over each item</li>
+							<li>Runs via filters, if any</li>
+							<li>Calculates a hash value to identify the object has already created a DOM</li>
+							<li>If so, it reuses it</li>
+							<li>If not, creates DOM based on ng-repeat template</li>
+							<li>Insert into the actual DOM</li>
+							<li>A watch is added on the array, which triggers step 1 again if the array undergoes any change</li>
+						</ul>
+						<br>
+						<br>
+						<a href="http://www.befundoo.com/blog/optimizing-ng-repeat-in-angularjs/">two ng repeat improvement suggestion</a>
+					</section>
+					<section>
+						<h2>ng-include in ng-repeat</h2>
+						<ul>
+							<li>Each time -</li>
+							<li class="fragment">clone ngInlcude directive to run a link function</li>
+							<li class="fragment">injects content</li>
+							<li class="fragment">calls $compile</li>
+							<li class="fragment">html in the ng-include needs to be parse again and again</li>
+						</ul>
+						<br>
+						<br>
+						<a href="http://www.bennadel.com/blog/2738-using-ngrepeat-with-nginclude-hurts-performance-in-angularjs.htm">ng repeat with nginclude</a>
+					</section>
+					<section>
+						<h4>browser will spend time to parse html for each item</h4>
+						<img src="images/ngInclude.png" alt="">
+					</section>
+					<section>
+						<h2>What can i do?</h2>
+						<pre><code>
+&lt;li ng-repeat=&quot;item in filteredItems()&quot;&gt; 
+						</code></pre>
+						<pre class="fragment"><code> 
+&lt;li ng-repeat=&quot;item in items&quot;&gt;
+						</code></pre>
+					</section>
+					<section>
+						<h2>what can i do?</h2>
+						<ul>
+							<li>Pagination</li>
+							<li class="fragment">limitTo</li>
+						</ul>
+						<pre class="fragment"><code>
+&lt;table&gt;
+    &lt;tr ng-repeat=&quot;d in data | limitTo:totalDisplayed&quot;&gt;
+        &lt;td&gt;{{d}}&lt;/td&gt;
+   &lt;/tr&gt;
+&lt;/table&gt;
+						</code></pre>
+						<li>debounce user input (searching)</li>
+						<br>
+						<br>
+						<a href="http://tech.small-improvements.com/2013/09/10/angularjs-performance-with-large-lists/">tuning long list</a>
+					</section>
+					<section>
+						<h2>ng Infinite Scroll</h2>
+						<ul>
+							<li>don't load everything use ng infinite scroll</li>
+						</ul>
+						<a href="http://binarymuse.github.io/ngInfiniteScroll/">read about ngInfiniteScroll</a>
+					</section>
+					<section>
+						<h2>filter in ng-repeat</h2>
+						<p>Avoid using filters if at all possible. They are run twice per digest cycle, once when anything changes, and another time to collect further changes, and do not actually remove any part of the collection from memory, instead simply masking filtered items with css</p>
+						<p>This renders $index worthless as it no longer corresponds to the actual array index, but the sorted array index. It also prevents you from letting go of all of the list's scopes.</p>
+					</section>
+					<section>
+						<h2>track by</h2>
+						<li>By default, ng-repeat creates a dom node for each item and destroys that dom node when the item is removed.</li>
+						<li>With track by $index, it will reuse dom nodes.</li>
+						<a href="http://www.codelord.net/2014/04/15/improving-ng-repeat-performance-with-track-by/">ng-repeat performance by track by</a>
+					</section>
+					<section>
+						<pre><code>
+&lt;div ng-repeat=”item in array”&gt;
+  I live and die by {{item}}.
+&lt;div&gt;
+						</code></pre>
+						<pre class="fragment"><code>
+&lt;div ng-repeat=”item in array track by $index”&gt;
+  I live until {{array.length}} is
+  less than {{$index}}.
+&lt;div&gt;
+						</code></pre>
+					</section>
+					<section>
+						<h2>bind once</h2>
+						<a href="https://github.com/Pasvaz/bindonce">git: bindonce</a>
+					</section>
+					<section>
+						<h2>summary ng repeat</h2>
+						
 					</section>
 				</section>
 				<section>
@@ -163,6 +262,12 @@
 				<section>
 					<section>
 						<h1>watcher</h1>
+					</section>
+					<section>
+						<p>Every time $watch is called on a scope value, or a value is bound from the DOM with interpolation, an ng-repeat, an ng-switch, and ng-if, or any other DOM attribute/element, a function gets added to the $$watchers array of the innermost scope.</p>
+						<p>When any value in scope changes, all watchers in the $$watchers array will fire, and if any of them modify a watched value, they will all fire again. This will continue until a full pass of the $$watchers array makes no changes, or AngularJS throws an exception.</p>
+						<p>if non-Angular code is run through $scope.$apply(), this will immediately kickstart the digest cycle.</p>
+						<p>The final note is that $scope.evalAsync() will run code in an async loop that does NOT trigger another digest cycle, and which will run at the end of the current/next digest cycle.</p>
 					</section>
 					<section>
 						<h2>count watcher</h2>
@@ -322,84 +427,6 @@ myApp.directive(function($parse) {
 					<section>
 						<h1>transclusion and scope</h1>
 						<a href="http://angular-tips.com/blog/2014/03/transclusion-and-scopes/">see whether to include or not</a>
-					</section>
-				</section>
-				<section>
-					<section>
-						<h1>long list</h1>
-					</section>
-					<section>
-						<h2></h2>
-						<ul>
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
-						</ul>
-					</section>
-					<section>
-						<h2></h2>
-						<ul>
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
-						</ul>
-					</section>
-				</section>
-				<section>
-					<section>
-						<h1>ng repeat</h1>
-					</section>
-					<section>
-						<h2>may be a summary</h2>
-						<a href="http://www.befundoo.com/blog/optimizing-ng-repeat-in-angularjs/">not good: but check</a>
-					</section>
-					<section>
-						<h2></h2>
-						<p>An ng-repeat likely deals with Arrays of $scope Objects and this hammers the $digest cycle’s performance.</p>
-						<p>For example, instead of rendering a global navigation using ng-repeat, we could create our own navigation using the $interpolate provider to render our template against an Object and convert it into DOM nodes.</p>
-						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">7.3 with code example</a>
-					</section>
-					<section>
-						<h2>nested ng repeat</h2>
-						<a href="http://daginge.com/technology/2013/08/11/debugging-performance-problems-in-angularjs-with-batarang/">good: debugging perf issue with tools</a>
-					</section>
-					<section>
-						<h2></h2>
-						<a href="http://www.bennadel.com/blog/2738-using-ngrepeat-with-nginclude-hurts-performance-in-angularjs.htm">ng repeat with nginclude</a>
-					</section>
-					<section>
-						<h2>bind once</h2>
-						<a href="https://github.com/Pasvaz/bindonce">bindonce</a>
-					</section>
-					<section>
-						<a href="http://www.williambrownstreet.net/blog/2013/07/angularjs-my-solution-to-the-ng-repeat-performance-problem/">improve ng repeat: collection of solutions</a>
-					</section>
-					<section>
-						<h2>track by</h2>
-						<li>By default, ng-repeat creates a dom node for each item and destroys that dom node when the item is removed.</li>
-						<li>With track by $index, it will reuse dom nodes.</li>
-						<a href="http://www.codelord.net/2014/04/15/improving-ng-repeat-performance-with-track-by/">ng-repeat performance by track by</a>
-					</section>
-					<section>
-						<pre><code>
-&lt;div ng-repeat=”item in array”&gt;
-  I live and die by {{item}}.
-&lt;div&gt;
-						</code></pre>
-						<pre class="fragment"><code>
-&lt;div ng-repeat=”item in array track by $index”&gt;
-  I live until {{array.length}} is
-  less than {{$index}}.
-&lt;div&gt;
-						</code></pre>
-					</section>
-					<section>
-						<h2>very good list of suggestion</h2>
-						<a href="http://tech.small-improvements.com/2013/09/10/angularjs-performance-with-large-lists/">tuning long list</a>
 					</section>
 				</section>
 				<section>
