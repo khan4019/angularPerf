@@ -95,6 +95,53 @@
 				</section>
 				<section>
 					<section>
+						<h1>Magic</h1>
+					</section>
+					<section>
+						<h2>two phases</h2>
+						<ul>
+							<li class="fragment">Compilation phase</li>
+							<li class="fragment">Runtime phase</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Compilation Phase</h2>
+						<pre><code>
+&lt;input ng-model="name"&gt;
+						</code></pre>
+						<ul>
+							<li class="fragment">input with ng-model becomes angular directive</li>
+							<li class="fragment">setup a keydown listener to input</li>
+							<li class="fragment">Something in angular named: $interpolation</li>
+							<li class="fragment">interpolation: markup with expression => string </li>
+							<li class="fragment">interpolation setup a $watch</li>
+							<li class="fragment">$watch will be notified if "name changes"</li>
+						</ul>
+						<br>
+						<br>
+						<a href="http://stackoverflow.com/a/17901134">$compile vs $interpolate vs $parse</a>
+					</section>
+					<section>
+						<h2>Runtime Phase</h2>
+						<ol>
+							<li class="fragment">When you press 'X'</li>
+							<li class="fragment">Browser emits a keydown event on input</li>
+							<li class="fragment"> input directive captures change</li>
+							<li class="fragment"> calls $apply("name = 'X';") to update model</li>
+							<li class="fragment">Angular applies the name = 'X'; to the model</li>
+							<li class="fragment">The $digest loop begins</li>
+							<li class="fragment">$watch list detects change notifies $interpolation</li>
+							<li class="fragment">$interpolation updates the DOM by $parse</li>
+							<li class="fragment">angular finishes keydown event</li>
+							<li class="fragment">browser render new text</li>
+						</ol>
+						<br>
+						<br>
+						<a href="https://docs.angularjs.org/guide/scope#scope-watch-performance-considerations">scope performance considerations</a>
+					</section>
+				</section>
+				<section>
+					<section>
 						<h1>Scope</h1>
 					</section>
 					<section>
@@ -111,6 +158,14 @@
 						<br>
 						<br>
 						<a href="https://github.com/angular/angular.js/wiki/Understanding-Scopes">understanding scope</a>
+					</section>
+					<section>
+						<h2>scope life cycle</h2>
+						<ul>
+							<li></li>
+						</ul>
+						<br>
+						<a href="https://docs.angularjs.org/guide/scope#scope-life-cycle">scope life cycle</a>
 					</section>
 					<section>
 						<h2></h2>
@@ -248,6 +303,17 @@
 							<li>completely removes and recreate DOM</li>
 							<li class="fragment">elements which is not in ur DOM, has less impact</li>
 							<li class="fragment">ng-if creates a child scope while ng-show/ng-hide does not</li>
+							<li class="fragment">ng-switch does the same thing</li>
+						</ul>
+					</section>
+					<section>
+						<h2>what should i use?</h2>
+						<ul>
+							<li></li>
+							<li class="fragment">How frequently will this change?</li>
+							<li class="fragment">the more frequent, the worse fit ng-if is</li>
+							<li class="fragment">How heavy is the scope?</li>
+							<li class="fragment">the heavyer, the better fit ng-if is</li>
 						</ul>
 					</section>
 				</section>
@@ -272,7 +338,33 @@
 				</section>
 				<section>
 					<section>
+						<h1>dirty checking</h1>
+					</section>
+					<section>
+						<h2>how angular updates</h2>
+						<ul>
+							<li class="fragment">remembers the value and compares it to previous value</li>
+							<li class="fragment"> basic dirty-checking</li>
+							<li class="fragment">If there is a change in value, then it fires the change event.</li>
+							<li class="fragment"></li>
+						</ul>
+						<a href="http://stackoverflow.com/questions/9682092/databinding-in-angularjs/9693933#9693933">Misko answer</a>
+					</section>
+				</section>
+				<section>
+					<section>
 						<h1>watcher</h1>
+					</section>
+					<section>
+						<li>$watch allows the directives to be notified of property changes, which allows the directive to render the updated value to the DOM.</li>
+					</section>
+					<section>
+						<img src="images/scopeWatch.png" alt="">
+						<a href="https://docs.angularjs.org/guide/scope#scope-watch-performance-considerations">watch performance consideration</a>
+					</section>
+					<section>
+						<p>Watching by value (scope.$watch (watchExpression, listener, true)) detects any change in an arbitrarily nested data structure. It is the most powerful change detection strategy, but also the most expensive. A full traversal of the nested data structure is needed on each digest, and a full copy of it needs to be held in memory.</p>
+
 					</section>
 					<section>
 						<p>Every time $watch is called on a scope value, or a value is bound from the DOM with interpolation, an ng-repeat, an ng-switch, and ng-if, or any other DOM attribute/element, a function gets added to the $$watchers array of the innermost scope.</p>
