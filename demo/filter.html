@@ -1,0 +1,135 @@
+<!doctype html>
+<html ng-app="Demo" ng-controller="AppController">
+<head>
+    <meta charset="utf-8" />
+ 
+    <title>
+        How Often Do Filters Execute In AngularJS
+    </title>
+ 
+    <style type="text/css">
+
+        p.hotspot {
+            border: 1px dotted #FF9900 ;
+            height: 50px ;
+            line-height: 50px ;
+            text-indent: 10px ;
+        }
+
+    </style>
+</head>
+<body>
+ 
+    <h1>
+        How Often Do Filters Execute In AngularJS
+    </h1>
+ 
+ 
+    <!-- BEGIN: AngularJS Digest Triggers. -->
+    <p>
+        <a ng-click="triggerDigest()">Trigger Digest</a>
+    </p>
+ 
+    <p ng-mousemove="triggerDigest()" class="hotspot">
+        Don't move your mouse here!
+    </p>
+    <!-- END: AngularJS Digest Triggers. -->
+ 
+ 
+    <!-- BEGIN: List Of Friends. -->
+    <ul>
+ 
+        <li ng-repeat="friend in friends | filter: random">
+ 
+            {{ friend.name }}
+ 
+        </li>
+ 
+    </ul>
+    <!-- END: List Of Friends. -->
+ 
+ 
+    <!-- Load jQuery and AngularJS from the CDN. -->
+    <script
+        type="text/javascript"
+        src="//code.jquery.com/jquery-2.0.0.min.js">
+    </script>
+    <script
+        type="text/javascript"
+        src="angular.min.js">
+    </script>
+    <script type="text/javascript">
+
+
+        // Create an application module for our demo.
+        var app = angular.module( "Demo", [] );
+
+
+        // -------------------------------------------------- //
+        // -------------------------------------------------- //
+
+
+        // I control the root of the application.
+        app.controller(
+            "AppController",
+            function( $scope ) {
+
+                // Set up the default collection of friends.
+                $scope.friends = [
+                    {
+                        id: 1,
+                        name: "Sarah"
+                    },
+                    {
+                        id: 2,
+                        name: "Joanna"
+                    },
+                    {
+                        id: 3,
+                        name: "Heather"
+                    },
+                    {
+                        id: 4,
+                        name: "Kim"
+                    }
+                ];
+
+
+                // ---
+                // PUBLIC METHODS.
+                // ---
+
+
+                // I provide the filter function being used to output
+                // the list of friends.
+                $scope.random = function( item ) {
+
+                    console.log( "Filtering on", item.name );
+
+                    var now = new Date();
+
+                    // If this returns true, the item is kept in the
+                    // list; otherwise, it is filtered out.
+                    return( now.getTime() % item.id );
+
+                };
+
+
+                // I am simply here to trigger a $digest. After the
+                // click-handler executes, AngularJS will perform a
+                // dirty check on all bindings to see if the click
+                // handlers percipitated a change in the view-model.
+                $scope.triggerDigest = function() {
+
+                    console.log( "# Thou hast summoned the $digest #" );
+
+                };
+
+            }
+        );
+
+
+    </script>
+ 
+</body>
+</html>

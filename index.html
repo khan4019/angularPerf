@@ -79,18 +79,19 @@
 				</section>
 				<section>
 					<section>
-						<h1>build an app</h1>
+						<h1>Build an app</h1>
 					</section>
 					<section>
-						<h2>create input</h2>
-						<li>learn how this creates scope</li>
-						<li>how the changes is done and displays</li>
-						<li></li>
-					</section>
-					<section>
-						<h1>starts</h1>
-						<p>discuss how two way bindings and ng-repeat works</p>
-						<a href="http://thenittygritty.co/angularjs-pitfalls-using-scopes">good: in depth</a>
+						<h2>Create input</h2>
+						<br>
+						<ul>
+							<li>show two way bindings</li>
+							<li>using ng-model and expression</li>
+						</ul>
+						<br>
+						<br>
+						<br>
+						<a href="http://thenittygritty.co/angularjs-pitfalls-using-scopes">angular js pitfalls</a>
 					</section>
 				</section>
 				<section>
@@ -98,7 +99,7 @@
 						<h1>Magic</h1>
 					</section>
 					<section>
-						<h2>two phases</h2>
+						<h2>Two phases</h2>
 						<ul>
 							<li class="fragment">Compilation phase</li>
 							<li class="fragment">Runtime phase</li>
@@ -111,11 +112,11 @@
 						</code></pre>
 						<ul>
 							<li class="fragment">input with ng-model becomes angular directive</li>
-							<li class="fragment">setup a keydown listener to input</li>
+							<li class="fragment">Setup a keydown listener to input</li>
 							<li class="fragment">Something in angular named: $interpolation</li>
 							<li class="fragment">interpolation: markup with expression => string </li>
 							<li class="fragment">interpolation setup a $watch</li>
-							<li class="fragment">$watch will be notified if "name changes"</li>
+							<li class="fragment">$watch will be notified if "name" changes</li>
 						</ul>
 						<br>
 						<br>
@@ -139,6 +140,9 @@
 						<br>
 						<a href="https://docs.angularjs.org/guide/scope#scope-watch-performance-considerations">scope performance considerations</a>
 					</section>
+					<section>
+						<img src="images/angularEvent.png" alt="">
+					</section>
 				</section>
 				<section>
 					<section>
@@ -148,7 +152,8 @@
 						<h2>Scopes</h2>
 						<ul>
 							<li>JavaScript Object</li>
-							<li>Prototypical Inheritance</li>
+							<li>rootscope is created during app bootstrap</li>
+							<li class="fragment">Prototypical Inheritance</li>
 							<li class="fragment">Arranged in hierarchical structure</li>
 							<li class="fragment">Mimic the DOM structure of the application</li>
 							<li class="fragment">Stores an array of functions $$watchers</li>
@@ -160,24 +165,16 @@
 						<a href="https://github.com/angular/angular.js/wiki/Understanding-Scopes">understanding scope</a>
 					</section>
 					<section>
-						<h2>scope life cycle</h2>
-						<ul>
-							<li></li>
-						</ul>
-						<br>
-						<a href="https://docs.angularjs.org/guide/scope#scope-life-cycle">scope life cycle</a>
-					</section>
-					<section>
-						<h2></h2>
+						<h2>What can be done</h2>
 						<ul>
 							<li>small scope will be faster than larger</li>
-							<li></li>
-							<li>get some points</li>
-							<li>will talk about this later</li>
+							<li>$destroy()- Removes the current scope (and all of its children)</li>
+							<li>$destroy - makes scope eligible for GC</li>
+							
 						</ul>
 						<br>
 						<br>
-						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">Very good: angularjs-performance-large-applications</a>
+						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">Large angular app performance</a>
 					</section>
 				</section>
 				<section>
@@ -377,6 +374,26 @@
 						<h2></h2>
 						<a href="http://www.aaron-gray.com/delaying-the-digest-cycle-in-angularjs/">delay digest cycle</a>
 					</section>
+					<section>
+						<h1>$apply() vs $digest()</h1>
+					</section>
+					<section>
+						<h2></h2>
+						<ul>
+							<li>$apply does rootscope.digest</li>
+							<li>this means everything: that scope and all its descendent are dirty checked</li>
+							<li>when u r writing a directive and inside that u r doing something. then u should use digest than apply</li>
+						</ul>
+					</section>
+					<section>
+						<h2></h2>
+						<ul>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+						<a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">code example in the middle</a>
+					</section>
 				</section>
 				<section>
 					<section>
@@ -499,29 +516,7 @@ $scope.$watch(function($scope) {
 				</section>
 				<section>
 					<section>
-						<h1>$apply() vs $digest()</h1>
-					</section>
-					<section>
-						<h2></h2>
-						<ul>
-							<li>$apply does rootscope.digest</li>
-							<li>this means everything: that scope and all its descendent are dirty checked</li>
-							<li>when u r writing a directive and inside that u r doing something. then u should use digest than apply</li>
-						</ul>
-					</section>
-					<section>
-						<h2></h2>
-						<ul>
-							<li></li>
-							<li></li>
-							<li></li>
-						</ul>
-						<a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">code example in the middle</a>
-					</section>
-				</section>
-				<section>
-					<section>
-						<h1>di1rective</h1>
+						<h1>directive</h1>
 					</section>
 					<section>
 						<a href="http://www.bennadel.com/blog/2737-directive-templates-have-a-small-impact-on-performance-in-angularjs.htm">directive template has small impact on performance</a>
@@ -575,31 +570,18 @@ myApp.directive(function($parse) {
 				</section>
 				<section>
 					<section>
-						<h1>why slow</h1>
-					</section>
-					<section>
-						<h2>what makes angular slow</h2>
-						<h3>in efficient directive</h3>
-						<ul>
-							<li>link vs compile</li>
-							
-						</ul>
-						<h3>dirty checking</h3>
-						<ul>
-							<li>lots of watcher</li>
-							<li>lots of slow watcher</li>
-							<li>too many calls to apply</li>
-						</ul>
-						<a href="https://www.youtube.com/watch?v=zyYpHIOrk_Y">ng conf video</a>
-					</section>
-				</section>
-				<section>
-					<section>
 						<h1>filter</h1>
 					</section>
 					<section>
-						<h2></h2>
-						<a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">at the bottom: limit DOM filter</a>
+						<h2>how often filter executes?</h2>
+						<br>
+						<ul>
+							<li>show filter demo</li>
+						</ul>
+						<br>
+						<a href="http://www.bennadel.com/blog/2489-how-often-do-filters-execute-in-angularjs.htm">how often filter executes?</a>
+						<br>
+						<a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">limit DOM filter</a>
 					</section>
 				</section>
 				<section>
@@ -697,17 +679,7 @@ myApp.directive(function($parse) {
 					</section>
 				</section>
 				<section>
-					<section>
-						<h1>One thing</h1>
-					</section>
-					<section>
-						<h2>snippets are awesome</h2>
-					</section>
-				</section>
-				<section>
 					<h2><a href="http://goo.gl/mfKvWP">goo.gl/mfKvWP</a></h2>
-					<img src="images/turkey.png" alt="">
-					<img class="fragment" src="images/eatBeef.gif" alt="">
 					<p>
 						<h3>
 							<a href="http://www.thatjsdude.com/">www.thatJSdude.com</a> / <a href="http://twitter.com/mdkhan005">@mdkhan005</a>
