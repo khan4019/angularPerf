@@ -368,15 +368,26 @@
 					</section>
 					<section>
 						<h2>explicit watcher</h2>
-						<li>$watch allows the directives to be notified of property changes, which allows the directive to render the updated value to the DOM.</li>
 						<pre class="fragment"><code>
 $watch(watchExpression, listener, [objectEquality]);
 						</code></pre>
-						<p>Talk much about $watch</p>
+						<ul>
+							<li>$watch allows the directives to be notified of property changes, which allows the directive to render the updated value to the DOM.</li>
+							<li>whatever is the first argument will be executed, many many times</li>
+							<li>it will compare values by reference</li>
+							<li>but if the third argument is "true"</li>
+							<li>deep - recurse through object with deep comparison</li>
+							<li>slow recurses- make a deep copy each time watched, to compare </li>
+						</ul>
+						<h4>avoid deep watch each time possible</h4>
 						<aside class="notes">
 							<p>Watching by value (scope.$watch (watchExpression, listener, true)) detects any change in an arbitrarily nested data structure. It is the most powerful change detection strategy, but also the most expensive. A full traversal of the nested data structure is needed on each digest, and a full copy of it needs to be held in memory.</p>
 							<p>Angular provides the ability to watch entire objects by passing a third, optional true parameter to scope.$watch. This is, for lack of better words, a terrible idea. A much better solution is to rely on services and object references to propagate object changes between scopes.</p>
 						</aside>
+					</section>
+					<section>
+						<h2>watchCollection</h2>
+						<p>google it</p>
 					</section>
 					<section>
 						<p>When any value in scope changes, all watchers in the $$watchers array will fire, and if any of them modify a watched value, they will all fire again. This will continue until a full pass of the $$watchers array makes no changes, or AngularJS throws an exception.</p>
@@ -392,6 +403,8 @@ $watch(watchExpression, listener, [objectEquality]);
 						<h2>count watcher</h2>
 						<h2>use this explanation style</h2>
 						<a href="http://angular-tips.com/blog/2013/08/watch-how-the-apply-runs-a-digest/">nice explanation</a>
+						<br>
+						<a href="https://medium.com/@kentcdodds/counting-angularjs-watchers-11c5134dc2ef">count number of watch</a>
 					</section>
 					<section>
 						<h2>do as little as possible</h2>
@@ -407,10 +420,6 @@ $watch(watchExpression, listener, [objectEquality]);
 						<a href="http://stackoverflow.com/questions/9682092/databinding-in-angularjs/9693933#9693933">Misko answer</a>
 					</section>
 					<section>
-						<h2>had a code block to count number of watch</h2>
-						<a href="https://medium.com/@kentcdodds/counting-angularjs-watchers-11c5134dc2ef">count number of watch</a>
-					</section>
-					<section>
 						<h2>aggregate watcher</h2>
 						<p>All that time spent invoking change watchers was mostly wasted. </p>
 						<p>To address this, we created a directive that “hides” the change watchers of its children, allowing them to be invoked only when the value of a specified parent expression changes. With this change, we avoided invoking thousands of per-word change watchers on every mouse click or other minor event.  </p>
@@ -422,21 +431,6 @@ $watch(watchExpression, listener, [objectEquality]);
 							<li></li>
 						</ul>
 						<a href="http://blog.scalyr.com/2013/10/angularjs-1200ms-to-35ms/"> optimization 2: 1200ms-to-35ms</a>
-					</section>
-					<section>
-						<h2></h2>
-						<ul>
-							<li>whatever is the first argument will be executed, many many times</li>
-							<li>it will compare values by reference</li>
-							<li>but if you pass "true" in the </li>
-							<li>deep - recurse through object with deep comparision; slow recurses- </li>
-							<li>also make a deep copy each time watched, to compare </li>
-						</ul>
-						<h4>avoid deep watch each time possible</h4>
-					</section>
-					<section>
-						<h2>watchCollection</h2>
-						<p>google it</p>
 					</section>
 					<section>
 						<h2>remove unneeded watcher</h2>
@@ -475,7 +469,6 @@ $scope.$watch(function($scope) {
 				<section>
 					<section>
 						<h1>$apply() vs $digest()</h1>
-												
 					</section>
 					<section>
 						<h2></h2>
