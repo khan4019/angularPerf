@@ -576,13 +576,38 @@ myApp.directive(function($parse) {
 						<h2>how often filter executes?</h2>
 						<br>
 						<ul>
-							<li> Filter data early instead of template filters when possible</li>
+							<li>Filters are really simple to use</li>
+							<li class="fragment">we insert a pipe, the filter name and we’re done</li>
+							<li class="fragment">every single filter twice per $digest cycl</li>
+							<li class="fragment"> first run is from the $$watchers detecting any changes</li>
+							<li class="fragment">second run is to see if there are further changes that need updated values</li>
 							<li>show filter demo</li>
 						</ul>
 						<br>
-						<a href="http://www.bennadel.com/blog/2489-how-often-do-filters-execute-in-angularjs.htm">how often filter executes?</a>
 						<br>
 						<a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">limit DOM filter</a>
+					</section>
+					<section>
+						<h2>What should I do</h2>
+						<ul>
+							<li></li>
+							<li> Filter data early instead of template filters when possible</li>
+							<li class="fragment"></li>
+						</ul>
+						<pre class="fragment"><code>
+{{ filter_expression | filter : expression : comparator }}
+						</code></pre>
+						<pre class="fragment"><code>
+$filter('filter')(array, expression, comparator);
+						</code></pre>
+						<br>
+						<br>
+						<a href="http://www.bennadel.com/blog/2489-how-often-do-filters-execute-in-angularjs.htm">how often filter executes?</a>
+						<aside class="notes">
+							Filters are really simple to use, we insert a pipe, the filter name and we’re done. However, Angular runs every single filter twice per $digest cycle once something has changed. This is some pretty heavy lifting. The first run is from the $$watchers detecting any changes, the second run is to see if there are further changes that need updated values.
+
+							Here’s an example of a DOM filter, these are the slowest type of filter, preprocessing our data would be much faster. If you can, avoid the inline filter syntax.
+						</aside>
 					</section>
 				</section>
 				<section>
