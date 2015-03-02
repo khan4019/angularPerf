@@ -321,6 +321,46 @@
 				</section>
 				<section>
 					<section>
+						<h1>binding</h1>
+					</section>
+					<section>
+						<h2>one time binding</h2>
+						<pre><code>
+ &lt;p&gt;One time binding {{::name}}&lt;/p&gt;
+ &lt;p&gt;Normal binding {{name}}&lt;/p&gt;
+						</code></pre>
+						<ul>
+							<li class="fragment">dont watch after first bind</li>
+							<li class="fragment">Reducing the number of expressions being watched</li>
+							<li class="fragment"> digest loop gets faster</li>
+							<li class="fragment">if value is undefined, keep watching</li>
+							<li class="fragment">after getting a value, watcher will be deregistered</li>
+						</ul>
+						<br>
+						<a href="https://docs.angularjs.org/guide/expression#one-time-binding">one time binding</a>
+					</section>
+					<section>
+						<h2>when to use it</h2>
+						<ul>
+							<li class="fragment">interpolating text or attributes:</li>
+							<pre class="fragment"><code>
+&lt;div name=&quot;attr: {{::color}}&quot;&gt;text: {{::name}}&lt;/div&gt;
+						</code></pre>
+							<li class="fragment"> a directive with bidirectional binding and the parameters will not change:</li>
+							<pre class="fragment"><code>
+&lt;div some-directive name=&quot;::myName&quot; color=&quot;My color is {{::myColor}}&quot;&gt;&lt;/div&gt;
+							</code></pre>	
+							<li class="fragment">a directive that takes an expression:</li>
+							<pre class="fragment"><code>
+&lt;ul&gt;
+  &lt;li ng-repeat=&quot;item in ::items&quot;&gt;{{item.name}};&lt;/li&gt;
+&lt;/ul&gt;
+						</code></pre>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
 						<h1>Digest cycle</h1>
 					</section>
 					<section>
@@ -459,15 +499,6 @@ $scope.$watch(function($scope) {
 				</section>
 				<section>
 					<section>
-						<h1>binding</h1>
-					</section>
-					<section>
-						<h2>one time binding</h2>
-						<a href="https://docs.angularjs.org/guide/expression#one-time-binding">one time binding</a>
-					</section>
-				</section>
-				<section>
-					<section>
 						<h1>$apply() vs $digest()</h1>
 					</section>
 					<section>
@@ -490,7 +521,7 @@ $scope.$watch(function($scope) {
 				</section>
 				<section>
 					<section>
-						<h1>directive</h1>
+						<h1>di1rective</h1>
 					</section>
 					<section>
 						<a href="http://www.bennadel.com/blog/2737-directive-templates-have-a-small-impact-on-performance-in-angularjs.htm">directive template has small impact on performance</a>
