@@ -182,6 +182,43 @@
 				</section>
 				<section>
 					<section>
+						<h1>ng-show</h1>
+					</section>
+					<section>
+						<h2>how it works</h2>
+						<ul>
+							<li>show or hide html elment</li>
+							<li>based on an expression</li>
+							<li>by adding and removing .ng-hide class</li>
+							<li class="fragment">will create and evaluate hidden elements</li>
+							<li class="fragment">display none</li>
+						</ul>
+						<br>
+						<br>
+						<a href="http://youtu.be/zyYpHIOrk_Y?t=10m38s">start from here</a>
+					</section>
+					<section>
+						<h2>ng-if</h2>
+						<ul>
+							<li>completely removes and recreate DOM</li>
+							<li class="fragment">elements which is not in ur DOM, has less impact</li>
+							<li class="fragment">ng-if creates a child scope while ng-show/ng-hide does not</li>
+							<li class="fragment">ng-switch does the same thing</li>
+						</ul>
+					</section>
+					<section>
+						<h2>what should i use?</h2>
+						<ul>
+							<li></li>
+							<li class="fragment">How frequently will this change?</li>
+							<li class="fragment">the more frequent, the worse fit ng-if is</li>
+							<li class="fragment">How heavy is the scope?</li>
+							<li class="fragment">the heavyer, the better fit ng-if is</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
 						<h1>ng repeat</h1>
 					</section>
 					<section>
@@ -284,41 +321,6 @@
 				</section>
 				<section>
 					<section>
-						<h1>ng-show</h1>
-					</section>
-					<section>
-						<h2>how it works</h2>
-						<ul>
-							<li>show or hide html elment</li>
-							<li>based on an expression</li>
-							<li>by adding and removing .ng-hide class</li>
-							<li class="fragment">will create and evaluate hidden elements</li>
-							<li class="fragment">display none</li>
-						</ul>
-						<a href="http://youtu.be/zyYpHIOrk_Y?t=10m38s">start from here</a>
-					</section>
-					<section>
-						<h2>ng-if</h2>
-						<ul>
-							<li>completely removes and recreate DOM</li>
-							<li class="fragment">elements which is not in ur DOM, has less impact</li>
-							<li class="fragment">ng-if creates a child scope while ng-show/ng-hide does not</li>
-							<li class="fragment">ng-switch does the same thing</li>
-						</ul>
-					</section>
-					<section>
-						<h2>what should i use?</h2>
-						<ul>
-							<li></li>
-							<li class="fragment">How frequently will this change?</li>
-							<li class="fragment">the more frequent, the worse fit ng-if is</li>
-							<li class="fragment">How heavy is the scope?</li>
-							<li class="fragment">the heavyer, the better fit ng-if is</li>
-						</ul>
-					</section>
-				</section>
-				<section>
-					<section>
 						<h1>Digest cycle</h1>
 					</section>
 					<section>
@@ -338,7 +340,7 @@
 				</section>
 				<section>
 					<section>
-						<h1>dirty checking</h1>
+						<h1>watcher</h1>
 					</section>
 					<section>
 						<h2>how angular updates</h2>
@@ -346,31 +348,45 @@
 							<li class="fragment">remembers the value and compares it to previous value</li>
 							<li class="fragment"> basic dirty-checking</li>
 							<li class="fragment">If there is a change in value, then it fires the change event.</li>
-							<li class="fragment"></li>
+							<li class="fragment">not everything in scope gets watch</li>
 						</ul>
-						<a href="http://stackoverflow.com/questions/9682092/databinding-in-angularjs/9693933#9693933">Misko answer</a>
-					</section>
-				</section>
-				<section>
-					<section>
-						<h1>watcher</h1>
 					</section>
 					<section>
+						<h2>Implicit watcher</h2>
+						<ul>
+							<li class="fragment">{{myExpression}}</li>
+							<li class="fragment">ng-repeat</li>
+							<li class="fragment">ng-show, ng-hide</li>
+							<li class="fragment">ng-if, ng-switch</li>
+						</ul>
+						<br>
+						<br>
+						<h4 class="fragment">A function gets added to the $$watchers array</h4>
+						<aside class="notes">
+							<p>Every time $watch is called on a scope value, or a value is bound from the DOM with interpolation, an ng-repeat, an ng-switch, and ng-if, or any other DOM attribute/element, a function gets added to the $$watchers array of the innermost scope.</p>
+						</aside>
+					</section>
+					<section>
+						<h2>explicit watcher</h2>
 						<li>$watch allows the directives to be notified of property changes, which allows the directive to render the updated value to the DOM.</li>
+						<pre class="fragment"><code>
+$watch(watchExpression, listener, [objectEquality]);
+						</code></pre>
+						<p>Talk much about $watch</p>
+						<aside class="notes">
+							<p>Watching by value (scope.$watch (watchExpression, listener, true)) detects any change in an arbitrarily nested data structure. It is the most powerful change detection strategy, but also the most expensive. A full traversal of the nested data structure is needed on each digest, and a full copy of it needs to be held in memory.</p>
+							<p>Angular provides the ability to watch entire objects by passing a third, optional true parameter to scope.$watch. This is, for lack of better words, a terrible idea. A much better solution is to rely on services and object references to propagate object changes between scopes.</p>
+						</aside>
 					</section>
 					<section>
-						<img src="images/scopeWatch.png" alt="">
-						<a href="https://docs.angularjs.org/guide/scope#scope-watch-performance-considerations">watch performance consideration</a>
-					</section>
-					<section>
-						<p>Watching by value (scope.$watch (watchExpression, listener, true)) detects any change in an arbitrarily nested data structure. It is the most powerful change detection strategy, but also the most expensive. A full traversal of the nested data structure is needed on each digest, and a full copy of it needs to be held in memory.</p>
-
-					</section>
-					<section>
-						<p>Every time $watch is called on a scope value, or a value is bound from the DOM with interpolation, an ng-repeat, an ng-switch, and ng-if, or any other DOM attribute/element, a function gets added to the $$watchers array of the innermost scope.</p>
 						<p>When any value in scope changes, all watchers in the $$watchers array will fire, and if any of them modify a watched value, they will all fire again. This will continue until a full pass of the $$watchers array makes no changes, or AngularJS throws an exception.</p>
 						<p>if non-Angular code is run through $scope.$apply(), this will immediately kickstart the digest cycle.</p>
 						<p>The final note is that $scope.evalAsync() will run code in an async loop that does NOT trigger another digest cycle, and which will run at the end of the current/next digest cycle.</p>
+					</section>
+					<section>
+						<img src="images/scopeWatch.png" alt="">
+						<br>
+						<a href="https://docs.angularjs.org/guide/scope#scope-watch-performance-considerations">watch performance consideration</a>
 					</section>
 					<section>
 						<h2>count watcher</h2>
@@ -378,16 +394,17 @@
 						<a href="http://angular-tips.com/blog/2013/08/watch-how-the-apply-runs-a-digest/">nice explanation</a>
 					</section>
 					<section>
-						<h2></h2>
-						<p>Another common problem is the utilization of functions in watchers or bindings. Never bind anything (ng-show, ng-repeat, etc.) directly to a function. Never watch a function result directly. This function will run on every digest cycle, possibly slowing your application to a crawl.</p>
-						<p>Similarly, Angular provides the ability to watch entire objects by passing a third, optional true parameter to scope.$watch. This is, for lack of better words, a terrible idea. A much better solution is to rely on services and object references to propagate object changes between scopes.</p>
+						<h2>do as little as possible</h2>
 						<ul>
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
+							<li class="fragment">Avoid binding function directly to ng-show, ng-repeat, etc.</li>
+							<li class="fragment">Avoid watch a function result directly</li>
+							<li class="fragment">This function will run on every digest cycle</li>
+							<li class="fragment">will slow your application</li>
+							<li class="fragment"></li>
 						</ul>
+						<br>
+						<br>
+						<a href="http://stackoverflow.com/questions/9682092/databinding-in-angularjs/9693933#9693933">Misko answer</a>
 					</section>
 					<section>
 						<h2>had a code block to count number of watch</h2>
@@ -452,7 +469,7 @@ $scope.$watch(function($scope) {
 					</section>
 					<section>
 						<h2>one time binding</h2>
-						
+						<a href="https://docs.angularjs.org/guide/expression#one-time-binding">one time binding</a>
 					</section>
 				</section>
 				<section>
