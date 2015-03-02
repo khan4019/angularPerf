@@ -365,6 +365,21 @@ $filter('filter')(array, expression, comparator);
 						<h1>binding</h1>
 					</section>
 					<section>
+						<h2>ng-bind vs {{}}</h2>
+						<ul>
+							<li class="fragment">g-bind is faster because it’s simpler in implementation</li>
+							<li class="fragment">{{}} has to go through extra steps of verifying context, jsonification of values and more</li>
+							<img src="images/ngBind.png" alt="" class="fragment">
+						</ul>
+						<br>
+						<br>
+						<a href="http://ng-perf.com/2014/10/30/tip-4-ng-bind-is-faster-than-expression-bind-and-one-time-bind/">ng-bind is faster than {{}}</a>
+					</section>
+					<section>
+						<h2>{{}} time</h2>
+						<img src="images/interpolation.png" alt="">
+					</section>
+					<section>
 						<h2>one time binding</h2>
 						<pre><code>
  &lt;p&gt;One time binding {{::name}}&lt;/p&gt;
@@ -655,8 +670,26 @@ myApp.directive(function($parse) {
 						<a href="http://youtu.be/zyYpHIOrk_Y?t=5m55s">ng conf video</a>
 					</section>
 					<section>
-						<h2>comparing</h2>
-						<a href="http://ng-perf.com/">ng-perf.com</a>
+						<h2>ng-class vs ng-style</h2>
+						<ul>
+							<li><a href="http://ansukla.github.io/ng-perf/demo-app/index.html#/ng-class">ng-class demo</a></li>
+							<li><a href="http://ansukla.github.io/ng-perf/demo-app/index.html#/ng-style">ng-style demo</a></li>
+							<li class="fragment">delay is due to Angular’s reliance on .data method to store all sort of data such as a class-count map and more</li>
+							<li class="fragment">if you have large data. you can consider it</li>
+						</ul>
+						<br>
+						<br>
+						<a href="http://ng-perf.com/2014/10/29/tip-3-ng-style-is-much-faster-than-ng-class/">ng style vs ng class</a>
+					</section>
+					<section>
+						<h2>Local events in directive</h2>
+						<br>
+						<br>
+						<a href="http://ng-perf.com/2014/10/27/speed-up-event-processing-using-local-events-in-your-directives/">local events in directive</a>
+					</section>
+					<section>
+						<h2>quicker app loading</h2>
+						<a href="http://ng-perf.com/2014/10/24/simple-trick-to-speed-up-your-angularjs-app-load-time/">ng-perf.com</a>
 					</section>
 					<section>
 						<h2>batching http request</h2>
