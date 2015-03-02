@@ -162,6 +162,8 @@
 						</ul>
 						<br>
 						<br>
+						<a href="http://teropa.info/blog/2013/11/03/make-your-own-angular-part-1-scopes-and-digest.html">scope and</a>
+						<br>
 						<a href="https://github.com/angular/angular.js/wiki/Understanding-Scopes">understanding scope</a>
 					</section>
 					<section>
@@ -212,6 +214,48 @@
 							<li class="fragment">How heavy is the scope?</li>
 							<li class="fragment">the heavyer, the better fit ng-if is</li>
 						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h1>filter</h1>
+					</section>
+					<section>
+						<h2>how often filter executes?</h2>
+						<br>
+						<ul>
+							<li>Filters are really simple to use</li>
+							<li class="fragment">we insert a pipe, the filter name and we’re done</li>
+							<li class="fragment">every single filter twice per $digest cycl</li>
+							<li class="fragment"> first run is from the $$watchers detecting any changes</li>
+							<li class="fragment">second run is to see if there are further changes that need updated values</li>
+							<li>show filter demo</li>
+						</ul>
+						<br>
+						<br>
+						<a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">limit DOM filter</a>
+					</section>
+					<section>
+						<h2>What should I do</h2>
+						<ul>
+							<li></li>
+							<li> Filter data early instead of template filters when possible</li>
+							<li class="fragment"></li>
+						</ul>
+						<pre class="fragment"><code>
+{{ filter_expression | filter : expression : comparator }}
+						</code></pre>
+						<pre class="fragment"><code>
+$filter('filter')(array, expression, comparator);
+						</code></pre>
+						<br>
+						<br>
+						<a href="http://www.bennadel.com/blog/2489-how-often-do-filters-execute-in-angularjs.htm">how often filter executes?</a>
+						<aside class="notes">
+							Filters are really simple to use, we insert a pipe, the filter name and we’re done. However, Angular runs every single filter twice per $digest cycle once something has changed. This is some pretty heavy lifting. The first run is from the $$watchers detecting any changes, the second run is to see if there are further changes that need updated values.
+
+							Here’s an example of a DOM filter, these are the slowest type of filter, preprocessing our data would be much faster. If you can, avoid the inline filter syntax.
+						</aside>
 					</section>
 				</section>
 				<section>
@@ -375,24 +419,44 @@
 						<a href="http://www.aaron-gray.com/delaying-the-digest-cycle-in-angularjs/">delay digest cycle</a>
 					</section>
 					<section>
-						<h1>$apply() vs $digest()</h1>
+						<h1>Outside Changes</h1>
 					</section>
 					<section>
-						<h2></h2>
+						<h2>$apply</h2>
 						<ul>
-							<li>$apply does rootscope.digest</li>
-							<li>this means everything: that scope and all its descendent are dirty checked</li>
-							<li>when u r writing a directive and inside that u r doing something. then u should use digest than apply</li>
+							<li>a Model change has occurred outside of angular</li>
+							<li class="fragment">$scope.$apply to inform Angular about change</li>
+							<li class="fragment">use it correctly, in the past and thrown uncaught errors in my JavaScrip</li>
+							<li class="fragment">$scope.$apply kicks off the $digest loop</li>
+							<li class="fragment">digest loop in the rootscope</li>
+							<li class="fragment">this means everything: dirty checked will run</li>
+							<li class="fragment">Everything means: Entire application: all of the watchers</li>
+							<pre class="fragment"><code>
+$(elem).myPlugin({
+  onchange: function (newValue) {
+    // model changes outside of Angular
+    $(this).val(newValue);
+    // tell Angular values have changed and to update via $digest
+    $scope.$apply();
+  }
+});
+							</code></pre>
 						</ul>
-					</section>
-					<section>
-						<h2></h2>
-						<ul>
-							<li></li>
-							<li></li>
-							<li></li>
-						</ul>
+						<br>
+						<br>
 						<a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">code example in the middle</a>
+					</section>
+					<section>
+						<h2>use scope.$digest for performance</h2>
+						<ul>
+							<li>$apply - trigger watchers on the entire $scope chain</li>
+							<li class="fragment">$digest() method will only trigger watchers on the current $scope and its children</li>
+							<li class="fragment">show demo</li>
+							<li class="fragment">Only problem: if you have anything on the parent, that will not get updated</li>
+						</ul>
+						<br>
+						<br>
+						<a href="http://www.bennadel.com/blog/2595-using-scope-digest-as-a-performance-optimization-in-angularjs.htm">scope.digest as perf imp</a>
 					</section>
 				</section>
 				<section>
@@ -564,54 +628,6 @@ myApp.directive(function($parse) {
 				</section>
 				<section>
 					<section>
-						<h1>transclusion and scope</h1>
-						<a href="http://angular-tips.com/blog/2014/03/transclusion-and-scopes/">see whether to include or not</a>
-					</section>
-				</section>
-				<section>
-					<section>
-						<h1>filter</h1>
-					</section>
-					<section>
-						<h2>how often filter executes?</h2>
-						<br>
-						<ul>
-							<li>Filters are really simple to use</li>
-							<li class="fragment">we insert a pipe, the filter name and we’re done</li>
-							<li class="fragment">every single filter twice per $digest cycl</li>
-							<li class="fragment"> first run is from the $$watchers detecting any changes</li>
-							<li class="fragment">second run is to see if there are further changes that need updated values</li>
-							<li>show filter demo</li>
-						</ul>
-						<br>
-						<br>
-						<a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">limit DOM filter</a>
-					</section>
-					<section>
-						<h2>What should I do</h2>
-						<ul>
-							<li></li>
-							<li> Filter data early instead of template filters when possible</li>
-							<li class="fragment"></li>
-						</ul>
-						<pre class="fragment"><code>
-{{ filter_expression | filter : expression : comparator }}
-						</code></pre>
-						<pre class="fragment"><code>
-$filter('filter')(array, expression, comparator);
-						</code></pre>
-						<br>
-						<br>
-						<a href="http://www.bennadel.com/blog/2489-how-often-do-filters-execute-in-angularjs.htm">how often filter executes?</a>
-						<aside class="notes">
-							Filters are really simple to use, we insert a pipe, the filter name and we’re done. However, Angular runs every single filter twice per $digest cycle once something has changed. This is some pretty heavy lifting. The first run is from the $$watchers detecting any changes, the second run is to see if there are further changes that need updated values.
-
-							Here’s an example of a DOM filter, these are the slowest type of filter, preprocessing our data would be much faster. If you can, avoid the inline filter syntax.
-						</aside>
-					</section>
-				</section>
-				<section>
-					<section>
 						<h1>extra</h1>
 					</section>
 					<section>
@@ -639,17 +655,6 @@ $filter('filter')(array, expression, comparator);
 						<a href="http://youtu.be/zyYpHIOrk_Y?t=5m55s">ng conf video</a>
 					</section>
 					<section>
-						<h2>use scope.$digest for performance</h2>
-						<ul>
-							<li>$apply - trigger watchers on the entire $scope chain</li>
-							<li class="fragment">$digest() method will only trigger watchers on the current $scope and its children</li>
-							<li class="fragment">show demo</li>
-						</ul>
-						<br>
-						<br>
-						<a href="http://www.bennadel.com/blog/2595-using-scope-digest-as-a-performance-optimization-in-angularjs.htm">scope.digest as perf imp</a>
-					</section>
-					<section>
 						<h2>comparing</h2>
 						<a href="http://ng-perf.com/">ng-perf.com</a>
 					</section>
@@ -660,6 +665,10 @@ $filter('filter')(array, expression, comparator);
 					<section>
 						<h2>mouseEnter</h2>
 						<a href="https://www.linkedin.com/pulse/20140528193614-17422516-jailbreaking-angular-apps-a-real-story-about-an-experience-i-had-recently">check middle for mouse enter</a>
+					</section>
+					<section>
+						<h1>transclusion and scope</h1>
+						<a href="http://angular-tips.com/blog/2014/03/transclusion-and-scopes/">see whether to include or not</a>
 					</section>
 					<section>
 						<li><a href="http://mono.software/posts/Improving-AngularJS-long-list-rendering-performance-using-ReactJS/">use react for long list</a></li>
