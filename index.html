@@ -576,6 +576,7 @@ myApp.directive(function($parse) {
 						<h2>how often filter executes?</h2>
 						<br>
 						<ul>
+							<li> Filter data early instead of template filters when possible</li>
 							<li>show filter demo</li>
 						</ul>
 						<br>
@@ -590,6 +591,18 @@ myApp.directive(function($parse) {
 					</section>
 					<section>
 						<h2>nice collection</h2>
+						<h4>look at notes and google more about it</h4>
+						<aside class="notes">
+							$emit
+
+							The event life cycle starts at the scope on which $emit was called. All listeners listening for name event on this scope get notified. Afterwards, the event traverses upwards toward the root scope and calls all registered listeners along the way. The event will stop propagating if one of the listeners cancels it.
+
+							$broadcast
+
+							Dispatches an event name downwards to all child scopes (and their children) notifying the registered $rootScope.Scope listeners.
+
+							The event life cycle starts at the scope on which $broadcast was called. All listeners listening for name event on this scope get notified. Afterwards, the event propagates to all direct and indirect scopes of the current scope and calls all registered listeners along the way. The event cannot be canceled
+						</aside>
 						<a href="http://www.cabotsolutions.com/2014/08/5-tips-to-improve-performance-in-angularjs-cordova-hybrid-applications/">talk about emit, broadcast and bootstrap</a>
 					</section>
 					<section>
@@ -602,6 +615,13 @@ myApp.directive(function($parse) {
 					</section>
 					<section>
 						<h2>use scope.$digest for performance</h2>
+						<ul>
+							<li>$apply - trigger watchers on the entire $scope chain</li>
+							<li class="fragment">$digest() method will only trigger watchers on the current $scope and its children</li>
+							<li class="fragment">show demo</li>
+						</ul>
+						<br>
+						<br>
 						<a href="http://www.bennadel.com/blog/2595-using-scope-digest-as-a-performance-optimization-in-angularjs.htm">scope.digest as perf imp</a>
 					</section>
 					<section>
