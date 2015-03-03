@@ -47,7 +47,7 @@
 					<h2>Performance</h2>
 					<br>
 					<br>
-					<!-- <h3 class="fragment"><a href="http://goo.gl/mfKvWP">goo.gl/mfKvWP</a></h3> -->
+					<h3 class="fragment"><a href="http://goo.gl/9ylsTB">goo.gl/9ylsTB</a></h3>
 					<br>
 					<br>
 						<h4>
@@ -55,36 +55,29 @@
 						</h4>
 					<p>(youtube.com/user/khanLearning)</p>
 				</section>
-				<section>
-					<section>
-						<h2>ToDos</h2>
-						<li>create a flow chart for ng repeat</li>
-					</section>
-				</section>
-				<section>
+				<!-- <section>
 					<h2>links</h2>
 					<ul>
 						<li><a href="http://stackoverflow.com/questions/17656397/angular-js-scaling-performance">check it: stackoverflow some discussion</a></li>
 						<li><a href="http://bahmutov.calepin.co/improving-angular-web-app-performance-example.html">long: perf with example</a></li>
-						<li></li>
 						<li><a href="http://de.slideshare.net/dragosrusu/angularjs-overcoming-performance-issues-limits">slide: check this slide</a></li>
 						<li><a href="http://www.slideshare.net/damienklinnert/angular-performance-tuning-for-large">another slide</a></li>
 						<li><a href="https://www.youtube.com/watch?v=gEjmv5gwF60">video: explains Batarang</a></li>
-						<li></li>
 						<li><a href="http://dapperdeveloper.com/2015/01/26/performance-of-angularjs-reactjs-and-knockoutjs-compared/">with react and knockout</a></li>
 						<li><a href="http://voidcanvas.com/emberjs-vs-angularjs-performance-testing/">with ember</a></li>
 						<li><a href="https://www.codementor.io/reactjs/tutorial/reactjs-vs-angular-js-performance-comparison-knockout">another one</a></li>
 						<li><a href="http://ng-learn.org/2014/03/AngularJS-2-Status-Preview/">2.0 preview</a></li>
 					</ul>
 				</section>
-				<section>
+				 --><section>
 					<section>
-						<h1>Build an app</h1>
+						<h1>Angular app</h1>
 					</section>
 					<section>
-						<h2>Create input</h2>
+						<h2>Build one</h2>
 						<br>
 						<ul>
+							<li>Create input</li>
 							<li>show two way bindings</li>
 							<li>using ng-model and expression</li>
 						</ul>
@@ -110,14 +103,17 @@
 						<pre><code>
 &lt;input ng-model="name"&gt;
 						</code></pre>
-						<ul>
+						<ol>
 							<li class="fragment">input with ng-model becomes angular directive</li>
 							<li class="fragment">Setup a keydown listener to input</li>
+						<pre class="fragment"><code>
+&lt;h1&gt;{{name}}&lt;/h1&gt;
+						</code></pre>
 							<li class="fragment">Something in angular named: $interpolation</li>
 							<li class="fragment">interpolation: markup with expression => string </li>
-							<li class="fragment">interpolation setup a $watch</li>
+							<li class="fragment">interpolation setup a $watch in current scope</li>
 							<li class="fragment">$watch will be notified if "name" changes</li>
-						</ul>
+						</ol>
 						<br>
 						<br>
 						<a href="http://stackoverflow.com/a/17901134">$compile vs $interpolate vs $parse</a>
@@ -162,6 +158,8 @@
 						</ul>
 						<br>
 						<br>
+						<a href="http://teropa.info/blog/2013/11/03/make-your-own-angular-part-1-scopes-and-digest.html">scope and</a>
+						<br>
 						<a href="https://github.com/angular/angular.js/wiki/Understanding-Scopes">understanding scope</a>
 					</section>
 					<section>
@@ -183,8 +181,11 @@
 					</section>
 					<section>
 						<h2>how it works</h2>
+						<pre><code>
+&lt;div ng-show=&quot;myValue&quot;&gt;&lt;/div&gt;
+						</code></pre>
 						<ul>
-							<li>show or hide html elment</li>
+							<li>show or hide html element</li>
 							<li>based on an expression</li>
 							<li>by adding and removing .ng-hide class</li>
 							<li class="fragment">will create and evaluate hidden elements</li>
@@ -196,6 +197,11 @@
 					</section>
 					<section>
 						<h2>ng-if</h2>
+						<pre><code>
+&lt;span ng-if=&quot;checked&quot;&gt;
+  This is removed when the checkbox is unchecked.
+&lt;/span&gt;
+						</code></pre>
 						<ul>
 							<li>completely removes and recreate DOM</li>
 							<li class="fragment">elements which is not in ur DOM, has less impact</li>
@@ -204,9 +210,10 @@
 						</ul>
 					</section>
 					<section>
-						<h2>what should i use?</h2>
+						<h2>What should i use?</h2>
+						<br>
+						<br>
 						<ul>
-							<li></li>
 							<li class="fragment">How frequently will this change?</li>
 							<li class="fragment">the more frequent, the worse fit ng-if is</li>
 							<li class="fragment">How heavy is the scope?</li>
@@ -216,19 +223,65 @@
 				</section>
 				<section>
 					<section>
+						<h1>filter</h1>
+					</section>
+					<section>
+						<h2>how often filter executes?</h2>
+						<br>
+						<pre><code>
+{{ filter_expression | filter : expression : comparator}}
+						</code></pre>
+						<ul>
+							<li>Filters are really simple to use</li>
+							<li class="fragment">We insert a pipe, the filter name and we’re done</li>
+							<li class="fragment">Every single filter twice per $digest cycle</li>
+							<li class="fragment">First run is from the $$watchers detecting any changes</li>
+							<li class="fragment">Second run is to see if there are further changes that need updated values</li>
+						</ul>
+						<br>
+						<br>
+						<br>
+						<p class="fragment">show filter demo</p>
+						<br>
+						<a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">limit DOM filter</a>
+					</section>
+					<section>
+						<h2>What should I do</h2>
+						<ul>
+							<li> Filter data early instead of template filters when possible</li>
+						</ul>
+						<pre class="fragment"><code>
+{{ filter_expression | filter : expression : comparator }}
+						</code></pre>
+						<pre class="fragment"><code>
+$filter('filter')(array, expression, comparator);
+						</code></pre>
+						<br>
+						<br>
+						<a href="http://www.bennadel.com/blog/2489-how-often-do-filters-execute-in-angularjs.htm">how often filter executes?</a>
+						<aside class="notes">
+							Filters are really simple to use, we insert a pipe, the filter name and we’re done. However, Angular runs every single filter twice per $digest cycle once something has changed. This is some pretty heavy lifting. The first run is from the $$watchers detecting any changes, the second run is to see if there are further changes that need updated values.
+
+							Here’s an example of a DOM filter, these are the slowest type of filter, preprocessing our data would be much faster. If you can, avoid the inline filter syntax.
+						</aside>
+					</section>
+				</section>
+				<section>
+					<section>
 						<h1>ng repeat</h1>
 					</section>
 					<section>
 						<h2>how ng-repat works</h2>
-						<ul>
+						<ol>
 							<li>Iterates over each item</li>
-							<li>Runs via filters, if any</li>
-							<li>Calculates a hash value to identify the object has already created a DOM</li>
-							<li>If so, it reuses it</li>
-							<li>If not, creates DOM based on ng-repeat template</li>
-							<li>Insert into the actual DOM</li>
-							<li>A watch is added on the array, which triggers step 1 again if the array undergoes any change</li>
-						</ul>
+							<li class="fragment">Runs via filters, if any</li>
+							<li class="fragment">Calculates a hash value to identify the object has already created a DOM</li>
+							<li class="fragment">If so, it reuses it</li>
+							<li class="fragment">If not, creates DOM based on ng-repeat template</li>
+							<li class="fragment">Insert into the actual DOM</li>
+							<li class="fragment">A watch is added on the array</li>
+							<li class="fragment">watch triggers step 1 again if the array undergoes any change</li>
+						</ol>
 						<br>
 						<br>
 						<a href="http://www.befundoo.com/blog/optimizing-ng-repeat-in-angularjs/">two ng repeat improvement suggestion</a>
@@ -279,15 +332,14 @@
 					</section>
 					<section>
 						<h2>ng Infinite Scroll</h2>
+						<br>
 						<ul>
 							<li>don't load everything use ng infinite scroll</li>
 						</ul>
+						<br>
+						<br>
+						<br>
 						<a href="http://binarymuse.github.io/ngInfiniteScroll/">read about ngInfiniteScroll</a>
-					</section>
-					<section>
-						<h2>filter in ng-repeat</h2>
-						<p>Avoid using filters if at all possible. They are run twice per digest cycle, once when anything changes, and another time to collect further changes, and do not actually remove any part of the collection from memory, instead simply masking filtered items with css</p>
-						<p>This renders $index worthless as it no longer corresponds to the actual array index, but the sorted array index. It also prevents you from letting go of all of the list's scopes.</p>
 					</section>
 					<section>
 						<h2>track by</h2>
@@ -299,7 +351,7 @@
 &lt;div&gt;
 						</code></pre>
 						<pre class="fragment"><code>
-&lt;div ng-repeat=”item in array track by $index”&gt;
+&lt;div ng-repeat=”item in array track by item.Id”&gt;
   I live until {{array.length}} is
   less than {{$index}}.
 &lt;div&gt;
@@ -313,12 +365,35 @@
 					</section>
 					<section>
 						<h2>summary ng repeat</h2>
-						
+						<ul>
+							<li class="fragment">Do not evaluate function</li>
+							<li class="fragment">reduce filter</li>
+							<li class="fragment">pagination</li>
+							<li class="fragment">limitTo</li>
+							<li class="fragment">track by</li>
+							<li class="fragment">bind once</li>
+							<li class="fragment">infinite scroll</li>
+						</ul>	
 					</section>
 				</section>
 				<section>
 					<section>
 						<h1>binding</h1>
+					</section>
+					<section>
+						<h2>ng-bind vs {{}}</h2>
+						<ul>
+							<li class="fragment">ng-bind is faster because it’s simpler in implementation</li>
+							<li class="fragment">{{}} has to go through extra steps of verifying context, jsonification of values and more</li>
+							<img src="images/ngBind.png" alt="" class="fragment">
+						</ul>
+						<br>
+						<br>
+						<a href="http://ng-perf.com/2014/10/30/tip-4-ng-bind-is-faster-than-expression-bind-and-one-time-bind/">ng-bind is faster than {{}}</a>
+					</section>
+					<section>
+						<h2>{{}} time</h2>
+						<img src="images/interpolation.png" alt="">
 					</section>
 					<section>
 						<h2>one time binding</h2>
@@ -333,6 +408,8 @@
 							<li class="fragment">if value is undefined, keep watching</li>
 							<li class="fragment">after getting a value, watcher will be deregistered</li>
 						</ul>
+						<br>
+						<br>
 						<br>
 						<a href="https://docs.angularjs.org/guide/expression#one-time-binding">one time binding</a>
 					</section>
@@ -361,38 +438,76 @@
 						<h1>Digest cycle</h1>
 					</section>
 					<section>
-						<h2></h2>
-						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">section 9</a>
+						<h2>digest cycle</h2>
+						<br>
+						<ul>
+							<li class="frgament">any changes via view/service input</li>
+							<li class="frgament">will trigger a $digest cycle</li>
+							<li class="frgament">More data bindings creates </li>
+							<li class="frgament">more watchers and scope objects</li>
+							<li class="frgament">will take longer on each digest cycle</li>
+						</ul>
+						<br>
+						<br>
+						<br>
+						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">read section 9</a>
+						<aside class="notes">
+							<p>Each time a Model is updated, either through user input in the View, or via service input to the Controller, Angular runs something called a $digest cycle.</p>
+							<p>This cycle is an internal execution loop that runs through your entire application’s bindings and checks if any values have changed. If values have changed, Angular will also update any values in the Model to return to a clear internal state. </p>
+							<p>When we create data-bindings with AngularJS, we’re creating more $$watchers and $scope Objects, which in turn will take longer to process on each $digest.</p>
+						</aside>
 					</section>
 					<section>
-						<h2></h2>
-						<p>Each time a Model is updated, either through user input in the View, or via service input to the Controller, Angular runs something called a $digest cycle.</p>
-						<p>This cycle is an internal execution loop that runs through your entire application’s bindings and checks if any values have changed. If values have changed, Angular will also update any values in the Model to return to a clear internal state. </p>
-						<p>When we create data-bindings with AngularJS, we’re creating more $$watchers and $scope Objects, which in turn will take longer to process on each $digest.</p>
-					</section>
-					<section>
-						<h2></h2>
+						<h2>debounce digest</h2>
+
+						<pre><code>
+&lt;input ng-model=&quot;name&quot; ng-model-options=&quot;{ debounce: 250 }&quot; /&gt;
+						</code></pre>
+						<br>
+						<li class="fragment">show it in demo</li>
+						<br>
+						<br>
 						<a href="http://www.aaron-gray.com/delaying-the-digest-cycle-in-angularjs/">delay digest cycle</a>
 					</section>
 					<section>
-						<h1>$apply() vs $digest()</h1>
+						<h2>Outside Changes</h2>
 					</section>
 					<section>
-						<h2></h2>
+						<h2>$apply</h2>
 						<ul>
-							<li>$apply does rootscope.digest</li>
-							<li>this means everything: that scope and all its descendent are dirty checked</li>
-							<li>when u r writing a directive and inside that u r doing something. then u should use digest than apply</li>
+							<li>a Model change has occurred outside of angular</li>
+							<li class="fragment">$scope.$apply to inform Angular about change</li>
+							<li class="fragment">use it correctly, in the past and thrown uncaught errors in my JavaScrip</li>
+							<li class="fragment">$scope.$apply kicks off the $digest loop</li>
+							<li class="fragment">digest loop in the rootscope</li>
+							<li class="fragment">this means everything: dirty checked will run</li>
+							<li class="fragment">Everything means: Entire application: all of the watchers</li>
+							<pre class="fragment"><code>
+$(elem).myPlugin({
+  onchange: function (newValue) {
+    // model changes outside of Angular
+    $(this).val(newValue);
+    // tell Angular values have changed and to update via $digest
+    $scope.$apply();
+  }
+});
+							</code></pre>
 						</ul>
-					</section>
-					<section>
-						<h2></h2>
-						<ul>
-							<li></li>
-							<li></li>
-							<li></li>
-						</ul>
+						<br>
+						<br>
 						<a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">code example in the middle</a>
+					</section>
+					<section>
+						<h2>use scope.$digest for performance</h2>
+						<ul>
+							<li>$apply - trigger watchers on the entire $scope chain</li>
+							<li class="fragment">$digest() method will only trigger watchers on the current $scope and its children</li>
+							<li class="fragment">Show demo | digest.html</li>
+							<li class="fragment">Only problem: if you have anything on the parent, that will not get updated</li>
+						</ul>
+						<br>
+						<br>
+						<a href="http://www.bennadel.com/blog/2595-using-scope-digest-as-a-performance-optimization-in-angularjs.htm">scope.digest as perf imp</a>
 					</section>
 				</section>
 				<section>
@@ -425,18 +540,21 @@
 					</section>
 					<section>
 						<h2>explicit watcher</h2>
-						<pre class="fragment"><code>
+						<pre><code>
 $watch(watchExpression, listener, [objectEquality]);
 						</code></pre>
 						<ul>
-							<li>$watch allows the directives to be notified of property changes, which allows the directive to render the updated value to the DOM.</li>
-							<li>whatever is the first argument will be executed, many many times</li>
-							<li>it will compare values by reference</li>
-							<li>but if the third argument is "true"</li>
-							<li>deep - recurse through object with deep comparison</li>
-							<li>slow recurses- make a deep copy each time watched, to compare </li>
+							<li class="fragment">will notify changes</li>
+							<li class="fragment">update changes to the DOM</li>
+							<li class="fragment">whatever is the first argument will be executed, many many times</li>
+							<li class="fragment">it will compare values by reference</li>
+							<li class="fragment">but if the third argument is "true"</li>
+							<li class="fragment">deep - recurse through object with deep comparison</li>
+							<li class="fragment">slow recurses- make a deep copy each time watched, to compare </li>
 						</ul>
-						<h4>avoid deep watch each time possible</h4>
+						<br>
+						<br>
+						<h4 class="fragment">avoid deep watch each time possible</h4>
 						<aside class="notes">
 							<p>Watching by value (scope.$watch (watchExpression, listener, true)) detects any change in an arbitrarily nested data structure. It is the most powerful change detection strategy, but also the most expensive. A full traversal of the nested data structure is needed on each digest, and a full copy of it needs to be held in memory.</p>
 							<p>Angular provides the ability to watch entire objects by passing a third, optional true parameter to scope.$watch. This is, for lack of better words, a terrible idea. A much better solution is to rely on services and object references to propagate object changes between scopes.</p>
@@ -444,12 +562,9 @@ $watch(watchExpression, listener, [objectEquality]);
 					</section>
 					<section>
 						<h2>watchCollection</h2>
-						<p>google it</p>
-					</section>
-					<section>
-						<p>When any value in scope changes, all watchers in the $$watchers array will fire, and if any of them modify a watched value, they will all fire again. This will continue until a full pass of the $$watchers array makes no changes, or AngularJS throws an exception.</p>
-						<p>if non-Angular code is run through $scope.$apply(), this will immediately kickstart the digest cycle.</p>
-						<p>The final note is that $scope.evalAsync() will run code in an async loop that does NOT trigger another digest cycle, and which will run at the end of the current/next digest cycle.</p>
+						<pre><code>
+$watchCollection(obj, listener);
+						</code></pre>
 					</section>
 					<section>
 						<img src="images/scopeWatch.png" alt="">
@@ -470,45 +585,61 @@ $watch(watchExpression, listener, [objectEquality]);
 							<li class="fragment">Avoid watch a function result directly</li>
 							<li class="fragment">This function will run on every digest cycle</li>
 							<li class="fragment">will slow your application</li>
-							<li class="fragment"></li>
 						</ul>
 						<br>
 						<br>
 						<a href="http://stackoverflow.com/questions/9682092/databinding-in-angularjs/9693933#9693933">Misko answer</a>
 					</section>
 					<section>
+						<img src="images/lazy2.jpg" alt="">
+					</section>
+					<section>
+						<img src="images/lazy3.jpg" alt="">
+					</section>
+					<section>
 						<h2>aggregate watcher</h2>
-						<p>All that time spent invoking change watchers was mostly wasted. </p>
-						<p>To address this, we created a directive that “hides” the change watchers of its children, allowing them to be invoked only when the value of a specified parent expression changes. With this change, we avoided invoking thousands of per-word change watchers on every mouse click or other minor event.  </p>
+						<br>
+						<br>
 						<ul>
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
-							<li></li>
+							<li>log viewer word watch</li>
+							<li>visit link below</li>
 						</ul>
+						<br>
+						<br>
+						<br>
 						<a href="http://blog.scalyr.com/2013/10/angularjs-1200ms-to-35ms/"> optimization 2: 1200ms-to-35ms</a>
+						<br>
+						<aside class="notes">
+							<p>All that time spent invoking change watchers was mostly wasted. </p>
+							<p>To address this, we created a directive that “hides” the change watchers of its children, allowing them to be invoked only when the value of a specified parent expression changes. With this change, we avoided invoking thousands of per-word change watchers on every mouse click or other minor event.</p>
+						</aside>
 					</section>
 					<section>
 						<h2>remove unneeded watcher</h2>
+						<br>
+						<pre><code>
+var unbinder = scope.$watch('scopeValueToBeWatcher', function(newVal, oldVal){
+	//do something
+});
+
+
+unbinder(); //this line removes the watch from $$watchers.
+						</code></pre>
+						<br>
 						<a href="http://angular-tips.com/blog/2013/08/removing-the-unneeded-watches/">check this one</a>
 					</section>
 					<section>
 						<h2>watch only what needed</h2>
 						<li>sometimes, deep watch is needed but not the whole object</li>
-						<li>By stripping out irrelevant data, we can make the comparison much faster.</li>
+						<li>strip out irrelevant data to make it faster.</li>
 						<pre><code>
-$scope.$watch(‘listOfBigObjects’,
-    myHandler, true);
+$scope.$watch(‘listOfBigObjects’, myHandler, true);
 						</code></pre>
-					</section>
-					<section>
-						<pre><code>
+						<pre class="fragment"><code>
 $scope.$watch(function($scope) {
   return $scope.listOfBigObjects.
       map(function(bigObject) {
-        return bigObject.foo.
-            fieldICareAbout;
+        return bigObject.foo.fieldICareAbout;
       });
 }, myHandler, true);
 						</code></pre>
@@ -519,30 +650,24 @@ $scope.$watch(function($scope) {
 						<h1>directive</h1>
 					</section>
 					<section>
-						<a href="http://www.bennadel.com/blog/2737-directive-templates-have-a-small-impact-on-performance-in-angularjs.htm">directive template has small impact on performance</a>
-					</section>
-					<section>
+						<h2>directive execution</h2>
+						<br>
 						<ul>
 							<li>when directive inside ng repeat</li>
-							<li>1. compile is called only once</li>
-							<li>link and constructor is called once per iteration</li>
+							<li class="fragment">compile is called only once</li>
+							<li class="fragment">link and constructor is called once per iteration</li>
 						</ul>
-						<h4>so put as much as possible inside compile</h4>
-						
-					</section>
-					<section>
-						<pre><code>
+						<pre class="fragment"><code>
 myApp.directive(function() {
   return {
     link: function(s, elem, attr) {
       s.foo = scope.$eval(attr.foo);
-      scope.$watch(attr.list,
-          function(list) {
+      scope.$watch(attr.list, function(list) {
             // do something
           }, true);
-    }};});
+    }};
+});
 						</code></pre>
-						<a href="https://docs.google.com/presentation/d/15XgHRI8Ng2MXKZqglzP3PugWFZmIDKOnlAXDGZW2Djg/edit#slide=id.g47be57cd_05">directive</a>
 					</section>
 					<section>
 						<pre><code>
@@ -553,93 +678,128 @@ myApp.directive(function($parse) {
           listExp = $parse(attr.list);
       return function link(s, elem) {
         s.foo = fooExp(s);
-        scope.$watchCollection(listExp,
-            function(list) {
+        scope.$watchCollection(listExp, function(list) {
               // do something
-            });
-      };}};});
+        });
+      };
+    }
+  };
+});
 
 						</code></pre>
+						<br>
+						<a href="https://docs.google.com/presentation/d/15XgHRI8Ng2MXKZqglzP3PugWFZmIDKOnlAXDGZW2Djg/edit#slide=id.g47be57cd_05">so put as much as possible inside compile</a>
 					</section>
 				</section>
 				<section>
 					<section>
-						<h1>transclusion and scope</h1>
-						<a href="http://angular-tips.com/blog/2014/03/transclusion-and-scopes/">see whether to include or not</a>
-					</section>
-				</section>
-				<section>
-					<section>
-						<h1>filter</h1>
+						<h1>Extra</h1>
 					</section>
 					<section>
-						<h2>how often filter executes?</h2>
+						<h2>broadcast vs emit</h2>
+						<br>
 						<br>
 						<ul>
-							<li>show filter demo</li>
+							<li class="fragment">$rootScope.$emit - only $rootScope listeners. don't want every $scope to get it</li>
+							<li class="fragment">$rootScope.$broadcast - every scope hear it</li>
+							<li class="fragment">$scope.$emit - scope and all parents including rootscope hear it</li>
+							<li class="fragment">$scope.$broadcast - itself and children</li>
 						</ul>
 						<br>
-						<a href="http://www.bennadel.com/blog/2489-how-often-do-filters-execute-in-angularjs.htm">how often filter executes?</a>
 						<br>
-						<a href="http://www.binpress.com/tutorial/speeding-up-angular-js-with-simple-optimizations/135">limit DOM filter</a>
-					</section>
-				</section>
-				<section>
-					<section>
-						<h1>extra</h1>
-					</section>
-					<section>
-						<h2>nice collection</h2>
 						<a href="http://www.cabotsolutions.com/2014/08/5-tips-to-improve-performance-in-angularjs-cordova-hybrid-applications/">talk about emit, broadcast and bootstrap</a>
+						<aside class="notes">
+							$rootScope.$emit only lets other $rootScope listeners catch it. This is good when you don't want every $scope to get it. Mostly a high level communication. Think of it as adults talking to each other in a room so the kids can't hear them.
+
+							$rootScope.$broadcast is a method that lets pretty much everything hear it. This would be the equivalent of parents yelling that dinner is ready so everyone in the house hears it.
+
+							$scope.$emit is when you want that $scope and all it's parents and $rootScope to hear the event. This is a child whining to their parents at home (but not at a grocery store where other kids can hear).
+
+							$scope.$broadcast is for the $scope itself and its children. This is a child whispering to its stuffed animals so their parents can't hear.
+						</aside>
+						<aside class="notes">
+							$emit
+
+							The event life cycle starts at the scope on which $emit was called. All listeners listening for name event on this scope get notified. Afterwards, the event traverses upwards toward the root scope and calls all registered listeners along the way. The event will stop propagating if one of the listeners cancels it.
+
+							$broadcast
+
+							Dispatches an event name downwards to all child scopes (and their children) notifying the registered $rootScope.Scope listeners.
+
+							The event life cycle starts at the scope on which $broadcast was called. All listeners listening for name event on this scope get notified. Afterwards, the event propagates to all direct and indirect scopes of the current scope and calls all registered listeners along the way. The event cannot be canceled
+						</aside>
 					</section>
 					<section>
-						<h2></h2>
-						<li>$parse vs $eval vs interpolation</li>
-						<li>parse: tokenise</li>
-						<li>better: call parse once. save it</li>
-						<li>and do eval everytime u needed</li>
-						<a href="http://youtu.be/zyYpHIOrk_Y?t=5m55s">ng conf video</a>
+						<h2>performance talk</h2>
+						<ul>
+							<li>$parse vs $eval vs interpolation</li>
+							<li>parse: tokenise</li>
+							<li>better: call parse once. save it</li>
+							<li>and do eval everytime u needed</li>
+						</ul>
+						<br>
+						<br>
+						<br>
+						<a href="http://youtu.be/zyYpHIOrk_Y?t=5m55s">ng conf video on performance</a>
 					</section>
 					<section>
-						<h2>use scope.$digest for performance</h2>
-						<a href="http://www.bennadel.com/blog/2595-using-scope-digest-as-a-performance-optimization-in-angularjs.htm">scope.digest as perf imp</a>
+						<h2>ng-class vs ng-style</h2>
+						<ul>
+							<li><a href="http://ansukla.github.io/ng-perf/demo-app/index.html#/ng-class">ng-class demo</a></li>
+							<li><a href="http://ansukla.github.io/ng-perf/demo-app/index.html#/ng-style">ng-style demo</a></li>
+							<li class="fragment">delay is due to Angular’s reliance on .data method to store all sort of data such as a class-count map and more</li>
+							<li class="fragment">if you have large data. you can consider it</li>
+						</ul>
+						<br>
+						<br>
+						<a href="http://ng-perf.com/2014/10/29/tip-3-ng-style-is-much-faster-than-ng-class/">ng style vs ng class</a>
 					</section>
 					<section>
-						<h2>comparing</h2>
-						<a href="http://ng-perf.com/">ng-perf.com</a>
+						<h2>Implementation detail</h2>
+						<ul>
+							<li>Angular’s watcher functions for ng-bind and text nodes ({{expression}}) put binding information inside the respective DOM elements using jQuery .data method</li>
+							<li class="fragment">expensive operation that impacts both load times and time taken to delete nodes</li>
+							<li class="fragment"> this information is not used in actual binding and is mostly for debugging purposes</li>
+							<li class="fragment">load time reduced by as much as 50%</li>
+						</ul>
+						<pre class="fragment"><code>
+//from angular 1.3
+config(['$routeProvider', '$compileProvider', function($routeProvider, $compileProvider) {
+    $compileProvider.debugInfoEnabled(false);
+}]
+						</code></pre>
+						<br>
+						<a href="http://ng-perf.com">ng-perf.com</a>
 					</section>
 					<section>
-						<h2>batching http request</h2>
-						<a href="http://jonsamwell.com/batching-http-requests-in-angular/">batching http request</a>
-					</section>
-					<section>
-						<h2>mouseEnter</h2>
-						<a href="https://www.linkedin.com/pulse/20140528193614-17422516-jailbreaking-angular-apps-a-real-story-about-an-experience-i-had-recently">check middle for mouse enter</a>
-					</section>
-					<section>
-						<li><a href="http://mono.software/posts/Improving-AngularJS-long-list-rendering-performance-using-ReactJS/">use react for long list</a></li>
-						<li><a href="http://www.williambrownstreet.net/blog/2014/04/faster-angularjs-rendering-angularjs-and-reactjs/">faster js rendering with reactjs</a></li>
-						<li></li>
-						<li><a href="http://blog.altoros.com/speed-up-i18n-in-angularjs.html">speed up with internationalization library</a></li>
-					</section>
-				</section>
-				<section>
-					<section>
-						<h1>ngReact</h1>
-						<a href="http://davidchang.github.io/ngReact/">check example</a>
+						<h2>others</h2>
+						<ul>
+							<li><a href="http://ng-perf.com/2014/10/27/speed-up-event-processing-using-local-events-in-your-directives/">speed up event processing by directive local event</a></li>
+							<li class="fragment"><a href="http://jonsamwell.com/batching-http-requests-in-angular/">batching http request</a></li>
+							<li class="fragment"><a href="https://www.linkedin.com/pulse/20140528193614-17422516-jailbreaking-angular-apps-a-real-story-about-an-experience-i-had-recently">Try to avoid mouse enter</a></li>
+							<li class="fragment"><a href="http://mono.software/posts/Improving-AngularJS-long-list-rendering-performance-using-ReactJS/">use react for long list</a></li>
+							<li class="fragment"><a href="http://www.williambrownstreet.net/blog/2014/04/faster-angularjs-rendering-angularjs-and-reactjs/">faster js rendering with reactjs</a></li>
+							<li class="fragment"><a href="http://blog.altoros.com/speed-up-i18n-in-angularjs.html">speed up with internationalization library</a></li>
+						</ul>
+						<br>
+						<br>
+						<a href="http://davidchang.github.io/ngReact/">ng-react directive with example</a>
 					</section>
 				</section>
 				<section>
 					<section>
 						<h1>summary</h1>
-						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">have a summary at bottom</a>
-						<br>
-						<a href="https://medium.com/@jeffwhelpley/is-angularjs-fast-enough-98dcf96406c8">might get points for summary</a>
-						<br>
-						<a href="http://www.fse.guru/angularjs-performance-tips">a list with repetitive stuff</a>
 					</section>
 					<section>
-						<h2></h2>
+						<h2>summary</h2>
+						<ul>
+							<li>bind once or one time binding</li>
+							<li class="fragment">prefer filter in the controller</li>
+							<li class="fragment">pagination, limitTo, track by</li>
+							<li class="fragment">$destroy, unbindwatch</li>
+							<li class="fragment">prefer digest over apply</li>
+							<li class="fragment">Everything doesnt have to be angular: <a href="http://davidandsuzi.com/ngreact-react-components-in-angular/">ng-react</a></li>
+						</ul>
 					</section>
 				</section>
 				<section>
@@ -679,7 +839,7 @@ myApp.directive(function($parse) {
 					</section>
 				</section>
 				<section>
-					<h2><a href="http://goo.gl/mfKvWP">goo.gl/mfKvWP</a></h2>
+					<h2><a href="http://goo.gl/9ylsTB">goo.gl/9ylsTB</a></h2>
 					<p>
 						<h3>
 							<a href="http://www.thatjsdude.com/">www.thatJSdude.com</a> / <a href="http://twitter.com/mdkhan005">@mdkhan005</a>
