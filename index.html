@@ -111,7 +111,7 @@
 						</code></pre>
 							<li class="fragment">Something in angular named: $interpolation</li>
 							<li class="fragment">interpolation: markup with expression => string </li>
-							<li class="fragment">interpolation setup a $watch</li>
+							<li class="fragment">interpolation setup a $watch in current scope</li>
 							<li class="fragment">$watch will be notified if "name" changes</li>
 						</ol>
 						<br>
@@ -197,6 +197,11 @@
 					</section>
 					<section>
 						<h2>ng-if</h2>
+						<pre><code>
+&lt;span ng-if=&quot;checked&quot;&gt;
+  This is removed when the checkbox is unchecked.
+&lt;/span&gt;
+						</code></pre>
 						<ul>
 							<li>completely removes and recreate DOM</li>
 							<li class="fragment">elements which is not in ur DOM, has less impact</li>
@@ -229,7 +234,7 @@
 						<ul>
 							<li>Filters are really simple to use</li>
 							<li class="fragment">We insert a pipe, the filter name and we’re done</li>
-							<li class="fragment">Every single filter twice per $digest cycl</li>
+							<li class="fragment">Every single filter twice per $digest cycle</li>
 							<li class="fragment">First run is from the $$watchers detecting any changes</li>
 							<li class="fragment">Second run is to see if there are further changes that need updated values</li>
 						</ul>
@@ -337,11 +342,6 @@ $filter('filter')(array, expression, comparator);
 						<a href="http://binarymuse.github.io/ngInfiniteScroll/">read about ngInfiniteScroll</a>
 					</section>
 					<section>
-						<h2>filter in ng-repeat</h2>
-						<p>Avoid using filters if at all possible. They are run twice per digest cycle, once when anything changes, and another time to collect further changes, and do not actually remove any part of the collection from memory, instead simply masking filtered items with css</p>
-						<p>This renders $index worthless as it no longer corresponds to the actual array index, but the sorted array index. It also prevents you from letting go of all of the list's scopes.</p>
-					</section>
-					<section>
 						<h2>track by</h2>
 						<li>By default, ng-repeat creates a dom node for each item and destroys that dom node when the item is removed.</li>
 						<li>With track by $index, it will reuse dom nodes.</li>
@@ -365,7 +365,15 @@ $filter('filter')(array, expression, comparator);
 					</section>
 					<section>
 						<h2>summary ng repeat</h2>
-						
+						<ul>
+							<li class="fragment">Do not evaluate function</li>
+							<li class="fragment">reduce filter</li>
+							<li class="fragment">pagination</li>
+							<li class="fragment">limitTo</li>
+							<li class="fragment">track by</li>
+							<li class="fragment">bind once</li>
+							<li class="fragment">infinite scroll</li>
+						</ul>	
 					</section>
 				</section>
 				<section>
@@ -375,7 +383,7 @@ $filter('filter')(array, expression, comparator);
 					<section>
 						<h2>ng-bind vs {{}}</h2>
 						<ul>
-							<li class="fragment">g-bind is faster because it’s simpler in implementation</li>
+							<li class="fragment">ng-bind is faster because it’s simpler in implementation</li>
 							<li class="fragment">{{}} has to go through extra steps of verifying context, jsonification of values and more</li>
 							<img src="images/ngBind.png" alt="" class="fragment">
 						</ul>
@@ -400,6 +408,8 @@ $filter('filter')(array, expression, comparator);
 							<li class="fragment">if value is undefined, keep watching</li>
 							<li class="fragment">after getting a value, watcher will be deregistered</li>
 						</ul>
+						<br>
+						<br>
 						<br>
 						<a href="https://docs.angularjs.org/guide/expression#one-time-binding">one time binding</a>
 					</section>
@@ -440,7 +450,7 @@ $filter('filter')(array, expression, comparator);
 						<br>
 						<br>
 						<br>
-						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">section 9</a>
+						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">read section 9</a>
 						<aside class="notes">
 							<p>Each time a Model is updated, either through user input in the View, or via service input to the Controller, Angular runs something called a $digest cycle.</p>
 							<p>This cycle is an internal execution loop that runs through your entire application’s bindings and checks if any values have changed. If values have changed, Angular will also update any values in the Model to return to a clear internal state. </p>
@@ -454,11 +464,13 @@ $filter('filter')(array, expression, comparator);
 &lt;input ng-model=&quot;name&quot; ng-model-options=&quot;{ debounce: 250 }&quot; /&gt;
 						</code></pre>
 						<br>
+						<li class="fragment">show it in demo</li>
+						<br>
 						<br>
 						<a href="http://www.aaron-gray.com/delaying-the-digest-cycle-in-angularjs/">delay digest cycle</a>
 					</section>
 					<section>
-						<h1>Outside Changes</h1>
+						<h2>Outside Changes</h2>
 					</section>
 					<section>
 						<h2>$apply</h2>
@@ -553,7 +565,6 @@ $watch(watchExpression, listener, [objectEquality]);
 						<pre><code>
 $watchCollection(obj, listener);
 						</code></pre>
-						<p>google it</p>
 					</section>
 					<section>
 						<img src="images/scopeWatch.png" alt="">
@@ -578,6 +589,12 @@ $watchCollection(obj, listener);
 						<br>
 						<br>
 						<a href="http://stackoverflow.com/questions/9682092/databinding-in-angularjs/9693933#9693933">Misko answer</a>
+					</section>
+					<section>
+						<img src="images/lazy2.jpg" alt="">
+					</section>
+					<section>
+						<img src="images/lazy3.jpg" alt="">
 					</section>
 					<section>
 						<h2>aggregate watcher</h2>
