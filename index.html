@@ -696,8 +696,27 @@ myApp.directive(function($parse) {
 						<h1>Extra</h1>
 					</section>
 					<section>
-						<h2>nice collection</h2>
-						<h4>look at notes and google more about it</h4>
+						<h2>broadcast vs emit</h2>
+						<br>
+						<br>
+						<ul>
+							<li class="fragment">$rootScope.$emit - only $rootScope listeners. don't want every $scope to get it</li>
+							<li class="fragment">$rootScope.$broadcast - every scope hear it</li>
+							<li class="fragment">$scope.$emit - scope and all parents including rootscope hear it</li>
+							<li class="fragment">$scope.$broadcast - itself and children</li>
+						</ul>
+						<br>
+						<br>
+						<a href="http://www.cabotsolutions.com/2014/08/5-tips-to-improve-performance-in-angularjs-cordova-hybrid-applications/">talk about emit, broadcast and bootstrap</a>
+						<aside class="notes">
+							$rootScope.$emit only lets other $rootScope listeners catch it. This is good when you don't want every $scope to get it. Mostly a high level communication. Think of it as adults talking to each other in a room so the kids can't hear them.
+
+							$rootScope.$broadcast is a method that lets pretty much everything hear it. This would be the equivalent of parents yelling that dinner is ready so everyone in the house hears it.
+
+							$scope.$emit is when you want that $scope and all it's parents and $rootScope to hear the event. This is a child whining to their parents at home (but not at a grocery store where other kids can hear).
+
+							$scope.$broadcast is for the $scope itself and its children. This is a child whispering to its stuffed animals so their parents can't hear.
+						</aside>
 						<aside class="notes">
 							$emit
 
@@ -709,7 +728,6 @@ myApp.directive(function($parse) {
 
 							The event life cycle starts at the scope on which $broadcast was called. All listeners listening for name event on this scope get notified. Afterwards, the event propagates to all direct and indirect scopes of the current scope and calls all registered listeners along the way. The event cannot be canceled
 						</aside>
-						<a href="http://www.cabotsolutions.com/2014/08/5-tips-to-improve-performance-in-angularjs-cordova-hybrid-applications/">talk about emit, broadcast and bootstrap</a>
 					</section>
 					<section>
 						<h2>performance talk</h2>
@@ -737,47 +755,51 @@ myApp.directive(function($parse) {
 						<a href="http://ng-perf.com/2014/10/29/tip-3-ng-style-is-much-faster-than-ng-class/">ng style vs ng class</a>
 					</section>
 					<section>
-						<h2>Local events in directive</h2>
+						<h2>Implementation detail</h2>
+						<ul>
+							<li>Angular’s watcher functions for ng-bind and text nodes ({{expression}}) put binding information inside the respective DOM elements using jQuery .data method</li>
+							<li class="fragment">expensive operation that impacts both load times and time taken to delete nodes</li>
+							<li class="fragment"> this information is not used in actual binding and is mostly for debugging purposes</li>
+							<li class="fragment">load time reduced by as much as 50%</li>
+						</ul>
+						<pre class="fragment"><code>
+//from angular 1.3
+config(['$routeProvider', '$compileProvider', function($routeProvider, $compileProvider) {
+    $compileProvider.debugInfoEnabled(false);
+}]
+						</code></pre>
 						<br>
-						<br>
-						<a href="http://ng-perf.com/2014/10/27/speed-up-event-processing-using-local-events-in-your-directives/">local events in directive</a>
+						<a href="http://ng-perf.com">ng-perf.com</a>
 					</section>
 					<section>
-						<h2>quicker app loading</h2>
-						<a href="http://ng-perf.com/2014/10/24/simple-trick-to-speed-up-your-angularjs-app-load-time/">ng-perf.com</a>
-					</section>
-					<section>
-						<h2>batching http request</h2>
-						<a href="http://jonsamwell.com/batching-http-requests-in-angular/">batching http request</a>
-					</section>
-					<section>
-						<h2>mouseEnter</h2>
-						<a href="https://www.linkedin.com/pulse/20140528193614-17422516-jailbreaking-angular-apps-a-real-story-about-an-experience-i-had-recently">check middle for mouse enter</a>
-					</section>
-					<!-- <section>
-						<h1>transclusion and scope</h1>
-						<a href="http://angular-tips.com/blog/2014/03/transclusion-and-scopes/">see whether to include or not</a>
-					</section>
-					 --><section>
-						<h2>ngReact</h2>
+						<h2>others</h2>
+						<ul>
+							<li><a href="http://ng-perf.com/2014/10/27/speed-up-event-processing-using-local-events-in-your-directives/">speed up event processing by directive local event</a></li>
+							<li class="fragment"><a href="http://jonsamwell.com/batching-http-requests-in-angular/">batching http request</a></li>
+							<li class="fragment"><a href="https://www.linkedin.com/pulse/20140528193614-17422516-jailbreaking-angular-apps-a-real-story-about-an-experience-i-had-recently">Try to avoid mouse enter</a></li>
+							<li class="fragment"><a href="http://mono.software/posts/Improving-AngularJS-long-list-rendering-performance-using-ReactJS/">use react for long list</a></li>
+							<li class="fragment"><a href="http://www.williambrownstreet.net/blog/2014/04/faster-angularjs-rendering-angularjs-and-reactjs/">faster js rendering with reactjs</a></li>
+							<li class="fragment"><a href="http://blog.altoros.com/speed-up-i18n-in-angularjs.html">speed up with internationalization library</a></li>
+						</ul>
 						<br>
 						<br>
-						<li><a href="http://mono.software/posts/Improving-AngularJS-long-list-rendering-performance-using-ReactJS/">use react for long list</a></li>
-						<li><a href="http://www.williambrownstreet.net/blog/2014/04/faster-angularjs-rendering-angularjs-and-reactjs/">faster js rendering with reactjs</a></li>
-						<li><a href="http://blog.altoros.com/speed-up-i18n-in-angularjs.html">speed up with internationalization library</a></li>
-						<br>
-						<br>
-						<a href="http://davidchang.github.io/ngReact/">check example</a>
+						<a href="http://davidchang.github.io/ngReact/">ng-react directive with example</a>
 					</section>
 				</section>
 				<section>
 					<section>
 						<h1>summary</h1>
-						<a href="https://www.airpair.com/angularjs/posts/angularjs-performance-large-applications">have a summary at bottom</a>
-						<br>
-						<a href="https://medium.com/@jeffwhelpley/is-angularjs-fast-enough-98dcf96406c8">might get points for summary</a>
-						<br>
-						<a href="http://www.fse.guru/angularjs-performance-tips">a list with repetitive stuff</a>
+					</section>
+					<section>
+						<h2>summary</h2>
+						<ul>
+							<li>bind once or one time binding</li>
+							<li class="fragment">prefer filter in the controller</li>
+							<li class="fragment">pagination, limitTo, track by</li>
+							<li class="fragment">$destroy, unbindwatch</li>
+							<li class="fragment">prefer digest over apply</li>
+							<li class="fragment">Everything doesnt have to be angular: <a href="http://davidandsuzi.com/ngreact-react-components-in-angular/">ng-react</a></li>
+						</ul>
 					</section>
 				</section>
 				<section>
